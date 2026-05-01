@@ -1,0 +1,68 @@
+.schedule-container {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px 0;
+    background-color: var(--bg-dark);
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.time-slot {
+    display: flex;
+    min-height: 60px;
+    position: relative;
+}
+
+/* Horizontal grid lines */
+.time-slot::after {
+    content: '';
+    position: absolute;
+    left: 60px;
+    right: 0;
+    top: 10px;
+    height: 1px;
+    background-color: var(--border-color);
+    z-index: 1;
+}
+
+.time-label {
+    width: 60px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding-top: 5px;
+    font-family: monospace;
+}
+
+/* Current time indicator */
+.current-time {
+    position: relative;
+    z-index: 2;
+}
+
+.current-time-line {
+    position: absolute;
+    left: 60px;
+    right: 0;
+    top: 10px; /* Align with the text baseline approximately */
+    height: 2px;
+    background-color: #00e5ff; /* Cyan color from the image */
+    box-shadow: 0 0 4px #00e5ff;
+}
+
+/* Optional: Add dot at the start of the line */
+.current-time-line::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    background-color: #6b4cff;
+    border-radius: 50%;
+}

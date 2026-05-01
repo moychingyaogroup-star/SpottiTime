@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpottiTime</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/schedule.css">
+    <link rel="stylesheet" href="css/right-panel.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar-container">
+            <div class="logo-container">
+                <div class="logo-icon"></div>
+                <h1>SpottiTime</h1>
+            </div>
+
+            <div id="profile-button-container"></div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>PERSONAL</h3>
+                    <div id="schedule-button-container"></div>
+                    <div id="important-dates-button-container"></div>
+                    <div id="categories-button-container"></div>
+                    <div id="analytics-button-container"></div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>SOCIAL</h3>
+                    <div id="friends-button-container"></div>
+                    <div id="messages-button-container"></div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>WORK</h3>
+                    <div id="business-button-container"></div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+                    <h2>Schedule</h2>
+                </div>
+                <div class="header-right">
+                    <div class="date-navigator">
+                        <button class="nav-arrow"><i class="fas fa-arrow-left"></i></button>
+                        <button class="btn-today">Today</button>
+                        <span class="current-date">Today</span>
+                        <button class="nav-arrow"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <button class="notifications"><i class="fas fa-bell"></i></button>
+                </div>
+            </header>
+
+            <div class="schedule-container" id="schedule-container">
+                <div class="timeline">
+                    <div class="time-slot"><span class="time-label">10:00</span></div>
+                    <div class="time-slot"><span class="time-label">11:00</span></div>
+                    <div class="time-slot"><span class="time-label">12:00</span></div>
+                    <div class="time-slot"><span class="time-label">13:00</span></div>
+                    <div class="time-slot"><span class="time-label">14:00</span></div>
+                    <div class="time-slot"><span class="time-label">15:00</span></div>
+                    <div class="time-slot"><span class="time-label">16:00</span></div>
+                    <div class="time-slot"><span class="time-label">17:00</span></div>
+                    <div class="time-slot"><span class="time-label">18:00</span></div>
+                    <div class="time-slot"><span class="time-label">19:00</span></div>
+                    <div class="time-slot current-time">
+                        <span class="time-label" style="color: var(--accent-color);">20:00</span>
+                        <div class="current-time-line"></div>
+                    </div>
+                    <div class="time-slot"><span class="time-label">21:00</span></div>
+                    <div class="time-slot"><span class="time-label">22:00</span></div>
+                    <div class="time-slot"><span class="time-label">23:00</span></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panels -->
+        <aside class="right-panels">
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h3>Categories</h3>
+                    <i class="fas fa-cog" style="color: var(--text-secondary); cursor: pointer; font-size: 14px;"></i>
+                </div>
+
+                <div class="drag-instructions">DRAG TO SCHEDULE</div>
+                <div class="color-grid">
+                    <div class="color-block" style="background-color: var(--color-eat);"></div>
+                    <div class="color-block" style="background-color: var(--color-exercise);"></div>
+                    <div class="color-block" style="background-color: var(--color-competitions);"></div>
+                    <div class="color-block" style="background-color: var(--color-personal-care);"></div>
+                    <div class="color-block" style="background-color: var(--color-family-time);"></div>
+                    <div class="color-block" style="background-color: var(--color-hobbies);"></div>
+                    <div class="color-block" style="background-color: var(--color-social-media);"></div>
+                    <div class="color-block" style="background-color: #333;"></div>
+                    <div class="color-block" style="background-color: var(--color-school);"></div>
+                    <div class="color-block" style="background-color: var(--color-study);"></div>
+                </div>
+
+                <div class="today-categories">
+                    <div class="category-heading">TODAY'S CATEGORIES</div>
+                    <div class="category-list">
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-eat);"></span>
+                            <i class="fas fa-utensils category-icon"></i>
+                            <span class="category-name">Eat</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-chores);"></span>
+                            <i class="fas fa-broom category-icon"></i>
+                            <span class="category-name">Chores</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-transport);"></span>
+                            <i class="fas fa-car category-icon"></i>
+                            <span class="category-name">Transport</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-study);"></span>
+                            <i class="fas fa-book category-icon"></i>
+                            <span class="category-name">Study</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-exercise);"></span>
+                            <i class="fas fa-dumbbell category-icon"></i>
+                            <span class="category-name">Exercise</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-hanging-out);"></span>
+                            <i class="fas fa-laugh category-icon"></i>
+                            <span class="category-name">Hanging Out</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-sleep);"></span>
+                            <i class="fas fa-bed category-icon"></i>
+                            <span class="category-name">Sleep</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h3><i class="fas fa-trophy" style="color: #ffd633; margin-right: 8px;"></i> LEADERBOARD</h3>
+                </div>
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item">
+                        <span class="rank">1</span>
+                        <div class="avatar" style="background-color: #ffb84d;">🦊</div>
+                        <div class="user-details">
+                            <div class="name">Jordan Lee <span class="status online"></span></div>
+                            <div class="streak">🔥 21d</div>
+                        </div>
+                        <span class="score" style="color: #6b4cff;">11,200</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="rank">2</span>
+                        <div class="avatar" style="background-color: #ff4d4d;">🦊</div>
+                        <div class="user-details">
+                            <div class="name">Alex Chen <span class="status online"></span></div>
+                            <div class="streak">🔥 14d</div>
+                        </div>
+                        <span class="score" style="color: #ff4dff;">6,800</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="rank">3</span>
+                        <div class="avatar" style="background-color: #b366ff;">🐻</div>
+                        <div class="user-details">
+                            <div class="name">Sam Park <span class="status online"></span></div>
+                            <div class="streak">🔥 7d</div>
+                        </div>
+                        <span class="score" style="color: #b366ff;">3,200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h3><i class="fas fa-chart-line" style="color: var(--text-secondary); margin-right: 8px;"></i> ACTIVITY</h3>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fas fa-fire activity-icon" style="color: #ffb84d;"></i>
+                        <div class="activity-content">
+                            <div><strong>Alex</strong> is on a 14-day streak!</div>
+                            <div class="activity-time">2h ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-check-square activity-icon" style="color: #4dff4d;"></i>
+                        <div class="activity-content">
+                            <div><strong>Jordan</strong> completed their schedule</div>
+                            <div class="activity-time">4h ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/components/ProfileButton.js"></script>
+    <script src="js/components/ScheduleButton.js"></script>
+    <script src="js/components/CategoriesButton.js"></script>
+    <script src="js/components/ImportantDatesButton.js"></script>
+    <script src="js/components/AnalyticsButton.js"></script>
+    <script src="js/components/FriendsButton.js"></script>
+    <script src="js/components/MessagesButton.js"></script>
+    <script src="js/components/BusinessButton.js"></script>
+</body>
+</html>
