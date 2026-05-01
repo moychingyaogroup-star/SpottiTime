@@ -1,23 +1,21 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
-// TODO: Replace with your app's Firebase project configuration
-// To get this configuration:
-// 1. Go to the Firebase Console (https://console.firebase.google.com/)
-// 2. Create a new project or open an existing one
-// 3. Register your web app (</> icon) to get your config object
-// 4. Enable Google Authentication in Build -> Authentication -> Sign-in method
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyC-NCuIXJCA_0Jtnd63tQm80Ja0_txxdtc",
+  authDomain: "sunwayproject-4ae5a.firebaseapp.com",
+  projectId: "sunwayproject-4ae5a",
+  storageBucket: "sunwayproject-4ae5a.firebasestorage.app",
+  messagingSenderId: "988512842099",
+  appId: "1:988512842099:web:a33f2418cc081843ced506",
+  measurementId: "G-FSZFL2JBWT"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
