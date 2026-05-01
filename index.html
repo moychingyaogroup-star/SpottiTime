@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/schedule.css">
     <link rel="stylesheet" href="css/right-panel.css">
+    <link rel="stylesheet" href="css/analytics.css">
     <link rel="stylesheet" href="css/social.css">
+    <link rel="stylesheet" href="css/gamification.css">
 </head>
 <body>
     <div class="app-container">
@@ -59,6 +61,10 @@
                         <span class="current-date">Today</span>
                         <button class="nav-arrow"><i class="fas fa-arrow-right"></i></button>
                     </div>
+                    <div class="gamification-header">
+                        <div title="Points"><i class="fas fa-star" style="color: var(--accent-color);"></i><span id="points-display">0 pts</span></div>
+                        <div title="Golden Apples"><span id="currency-display"><i class="fas fa-apple-alt" style="color: #ffd633; margin-right: 4px;"></i>0</span></div>
+                    </div>
                     <button class="notifications"><i class="fas fa-bell"></i></button>
                 </div>
             </header>
@@ -94,6 +100,7 @@
                     <div class="time-slot"><span class="time-label">23:00</span><div class="slot-content"></div></div>
                 </div>
             </div>
+            <div class="analytics-container" id="analytics-container" style="display: none;"></div>
         </main>
 
         <!-- Right Panels -->
@@ -119,22 +126,18 @@
                 </div>
 
                 <div class="today-categories">
-                    <div class="category-heading">TODAY'S CATEGORIES</div>
+                    <div class="category-heading">CATEGORIES</div>
                     <div class="category-list">
+
                         <div class="category-item">
-                            <span class="category-dot" style="background-color: var(--color-eat);"></span>
-                            <i class="fas fa-utensils category-icon"></i>
-                            <span class="category-name">Eat</span>
+                            <span class="category-dot" style="background-color: var(--color-sleep);"></span>
+                            <i class="fas fa-bed category-icon"></i>
+                            <span class="category-name">Sleep</span>
                         </div>
                         <div class="category-item">
-                            <span class="category-dot" style="background-color: var(--color-chores);"></span>
-                            <i class="fas fa-broom category-icon"></i>
-                            <span class="category-name">Chores</span>
-                        </div>
-                        <div class="category-item">
-                            <span class="category-dot" style="background-color: var(--color-transport);"></span>
-                            <i class="fas fa-car category-icon"></i>
-                            <span class="category-name">Transport</span>
+                            <span class="category-dot" style="background-color: var(--color-school);"></span>
+                            <i class="fas fa-school category-icon"></i>
+                            <span class="category-name">School/Work</span>
                         </div>
                         <div class="category-item">
                             <span class="category-dot" style="background-color: var(--color-study);"></span>
@@ -147,14 +150,59 @@
                             <span class="category-name">Exercise</span>
                         </div>
                         <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-eat);"></span>
+                            <i class="fas fa-utensils category-icon"></i>
+                            <span class="category-name">Eat</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-transport);"></span>
+                            <i class="fas fa-car category-icon"></i>
+                            <span class="category-name">Transport</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-personal-care);"></span>
+                            <i class="fas fa-bath category-icon"></i>
+                            <span class="category-name">Personal Care</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-family-time);"></span>
+                            <i class="fas fa-home category-icon"></i>
+                            <span class="category-name">Family Time</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-hobbies);"></span>
+                            <i class="fas fa-palette category-icon"></i>
+                            <span class="category-name">Hobbies</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-entertainment);"></span>
+                            <i class="fas fa-gamepad category-icon"></i>
+                            <span class="category-name">Entertainment</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-social-media);"></span>
+                            <i class="fas fa-mobile-alt category-icon"></i>
+                            <span class="category-name">Social Media</span>
+                        </div>
+                        <div class="category-item">
                             <span class="category-dot" style="background-color: var(--color-hanging-out);"></span>
                             <i class="fas fa-laugh category-icon"></i>
                             <span class="category-name">Hanging Out</span>
                         </div>
                         <div class="category-item">
-                            <span class="category-dot" style="background-color: var(--color-sleep);"></span>
-                            <i class="fas fa-bed category-icon"></i>
-                            <span class="category-name">Sleep</span>
+                            <span class="category-dot" style="background-color: var(--color-chores);"></span>
+                            <i class="fas fa-broom category-icon"></i>
+                            <span class="category-name">Chores</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-competitions);"></span>
+                            <i class="fas fa-trophy category-icon"></i>
+                            <span class="category-name">Competitions</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-dot" style="background-color: var(--color-work);"></span>
+                            <i class="fas fa-briefcase category-icon"></i>
+                            <span class="category-name">Work</span>
                         </div>
                     </div>
                 </div>
@@ -229,7 +277,9 @@
     <script src="js/components/FriendsButton.js"></script>
     <script src="js/components/MessagesButton.js"></script>
     <script src="js/components/BusinessButton.js"></script>
-    <script src="js/components/EmployeesButton.js"></script>
+    <script src="js/components/AnalyticsView.js"></script>
+    <script src="js/points.js"></script>
+    <script src="js/currency.js"></script>
     <script src="js/schedule-workspace.js"></script>
 </body>
 </html>
