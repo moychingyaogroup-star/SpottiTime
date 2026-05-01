@@ -73,9 +73,11 @@ class AnalyticsView {
             }
         ];
 
-        this.render();
-        this.addEventListeners();
-        this.updateAnalytics(); // Initial calculation
+        if (this.container) {
+            this.render();
+            this.addEventListeners();
+            this.updateAnalytics(); // Initial calculation
+        }
     }
 
     render() {
