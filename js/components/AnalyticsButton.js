@@ -19,12 +19,16 @@ class AnalyticsButton {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // Show analytics, hide schedule
+            // Show analytics, hide others
             const analyticsContainer = document.getElementById('analytics-container');
             if (analyticsContainer) {
                 analyticsContainer.style.display = 'flex'; // Or block depending on CSS
             }
             document.getElementById('schedule-container').style.display = 'none';
+            const categoriesContainer = document.getElementById('categories-view-container');
+            if (categoriesContainer) {
+                categoriesContainer.style.display = 'none';
+            }
 
             // Update header text
             const header = document.querySelector('.header-left h2');
