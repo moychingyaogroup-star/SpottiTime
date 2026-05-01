@@ -226,3 +226,26 @@ body {
     flex-direction: column;
     overflow-y: auto;
 }
+
+/* Ensure emoji picker styling */
+.emoji-picker-container {
+    position: absolute;
+    background: #2a2a35;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    z-index: 1000;
+}
+
+.emoji-picker-container span {
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.emoji-picker-container span:hover {
+    transform: scale(1.2);
+}
