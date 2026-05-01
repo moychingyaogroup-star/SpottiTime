@@ -16,7 +16,7 @@ class FriendsButton {
             </a>
         `;
 
-        document.getElementById('open-friends-modal').addEventListener('click', (e) => {
+        this.container.querySelector('#open-friends-modal').addEventListener('click', (e) => {
             e.preventDefault();
             this.openModal();
         });

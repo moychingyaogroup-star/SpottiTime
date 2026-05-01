@@ -16,7 +16,7 @@ class MessagesButton {
             </a>
         `;
 
-        document.getElementById('open-messages-modal').addEventListener('click', (e) => {
+        this.container.querySelector('#open-messages-modal').addEventListener('click', (e) => {
             e.preventDefault();
             this.openModal();
         });
