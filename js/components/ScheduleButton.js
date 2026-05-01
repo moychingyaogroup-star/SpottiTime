@@ -20,11 +20,15 @@ class ScheduleButton {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // Show schedule, hide analytics
+            // Show schedule, hide others
             document.getElementById('schedule-container').style.display = 'block';
             const analyticsContainer = document.getElementById('analytics-container');
             if (analyticsContainer) {
                 analyticsContainer.style.display = 'none';
+            }
+            const categoriesContainer = document.getElementById('categories-view-container');
+            if (categoriesContainer) {
+                categoriesContainer.style.display = 'none';
             }
 
             // Update header text
