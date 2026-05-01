@@ -226,6 +226,21 @@
 <!-- RIGHT PANEL -->
 <div id="right-panel">
   <div class="rp-section">
+
+  <div class="rp-section" style="margin-top:20px;">
+    <div class="rp-title">📋 Daily Tasks</div>
+    <div style="display:flex; gap:5px; margin-bottom:10px;">
+        <input id="new-task-input" class="tf-input" placeholder="Add a task..." style="flex:1;" />
+        <button onclick="addTask()" style="background:var(--accent); color:#fff; border:none; border-radius:6px; padding:0 12px; cursor:pointer; font-weight:bold;">+</button>
+    </div>
+    <div id="task-list" style="max-height: 200px; overflow-y: auto;"></div>
+  </div>
+
+
+  <div class="rp-section" style="margin-top:20px;">
+    <div id="plant-container" style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:15px;"></div>
+  </div>
+
     <div class="rp-title">🏆 Leaderboard</div>
     <div id="rp-lb"></div>
   </div>
@@ -345,6 +360,8 @@
 <script src="./js/analytics.js"></script>
 <script src="./js/chat.js"></script>
 <script src="./js/business.js"></script>
+<script src="./js/points.js"></script>
+<script src="./js/currency.js"></script>
 <script src="./js/ui.js"></script>
 </body>
 </html>
