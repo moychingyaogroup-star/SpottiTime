@@ -1,0 +1,129 @@
+.employees-workspace {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.employees-dashboard {
+    padding: 30px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tracker-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.btn-add {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-add:hover {
+    background: var(--accent-hover);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.employees-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.employees-table th {
+    text-align: left;
+    padding: 15px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.employees-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.employee-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-dark);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.employee-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.emp-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.emp-role {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.editable-input {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: 6px;
+    width: 80px;
+    font-size: 14px;
+}
+
+.editable-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.calc-cost {
+    font-family: monospace;
+    font-size: 14px;
+    color: #4dff4d;
+    font-weight: 600;
+}

@@ -1,0 +1,284 @@
+.business-workspace {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+.employees-sidebar {
+    width: 250px;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.employees-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employees-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-add-employee {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.employee-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.employee-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 10px;
+}
+
+.employee-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-dark);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.employee-info {
+    flex: 1;
+}
+
+.employee-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.employee-role {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.employee-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-time-off {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-time-off:hover {
+    background: rgba(255, 77, 77, 0.2);
+}
+
+.employee-hours {
+    font-size: 12px;
+    color: var(--accent-color);
+    font-weight: 600;
+    min-width: 25px;
+    text-align: right;
+}
+
+.business-stats {
+    display: flex;
+    gap: 15px;
+}
+
+.stat-box {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-navigator {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-arrow {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.current-date-range {
+    font-weight: 600;
+}
+
+.calendar-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-panel);
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.small-calendar {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.btn-copy {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-copy:hover {
+    color: var(--accent-color);
+}
+
+/* Grid Layout */
+.grid-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+}
+
+.grid-header {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-panel);
+}
+
+.time-column-header {
+    width: 60px;
+    min-width: 60px;
+    border-right: 1px solid var(--border-color);
+}
+
+.employee-column-header {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid var(--border-color);
+}
+
+.employee-info-sm {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.role-sm {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+.grid-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-row {
+    display: flex;
+    min-height: 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.time-cell {
+    width: 60px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-right: 1px solid var(--border-color);
+}
+
+.shift-cell {
+    flex: 1;
+    border-right: 1px solid var(--border-color);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.shift-cell:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.shift-block {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background-color: rgba(107, 76, 255, 0.2);
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-primary);
+}
