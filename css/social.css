@@ -1,0 +1,316 @@
+/* General Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--bg-primary, #ffffff);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-secondary, #666);
+}
+
+.modal-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-primary, #333);
+}
+
+/* Story Modal Styles */
+.story-upload-area {
+    border: 2px dashed var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.story-upload-area:hover {
+    background-color: var(--bg-secondary, #f5f5f5);
+}
+
+.story-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.story-preview-item {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid transparent;
+}
+
+.story-decorations {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.story-decoration-option {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+}
+
+/* Specific decoration styles */
+.dec-instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    padding: 2px;
+}
+.dec-instagram-inner {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.dec-neon {
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    background-color: #222;
+}
+
+.dec-minimal {
+    border: 2px solid #333;
+    background-color: #fff;
+}
+
+.story-decoration-option.selected {
+    border-color: var(--accent-color, #4a90e2);
+    transform: scale(1.1);
+}
+
+.post-story-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color, #4a90e2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.post-story-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Friends Modal Styles */
+.user-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.user-avatar-large {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--accent-color, #4a90e2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.user-info h3 {
+    margin: 0 0 5px 0;
+}
+
+.friend-tag {
+    color: var(--text-secondary, #666);
+    font-family: monospace;
+    background-color: var(--bg-secondary, #f5f5f5);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.friend-search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.friend-search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+}
+
+.add-friend-btn {
+    padding: 10px 15px;
+    background-color: var(--accent-color, #4a90e2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.friends-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.friend-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Messages / WhatsApp-like Interface */
+.messages-container {
+    display: flex;
+    height: 600px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.contacts-sidebar {
+    width: 30%;
+    border-right: 1px solid var(--border-color, #ccc);
+    background-color: var(--bg-secondary, #f5f5f5);
+    overflow-y: auto;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.contact-item:hover, .contact-item.active {
+    background-color: #ebebeb;
+}
+
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #efeae2; /* WhatsApp chat background color */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.chat-header {
+    padding: 15px;
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #d1d7db;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message-bubble {
+    max-width: 65%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    position: relative;
+    font-size: 14px;
+}
+
+.message-received {
+    background-color: #fff;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+}
+
+.message-sent {
+    background-color: #d9fdd3;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+}
+
+.chat-input-area {
+    padding: 15px;
+    background-color: #f0f2f5;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #fff;
+    outline: none;
+}
+
+.send-btn {
+    background-color: #00a884;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
