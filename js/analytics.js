@@ -57,7 +57,7 @@ function renderAnalytics(){
   const canvas=document.createElement('canvas');canvas.width=148;canvas.height=148;pw.appendChild(canvas);
   const legend=document.createElement('div');legend.className='pie-legend';
   slices.forEach(s=>{
-    const pct=(s.hours/totalAll*100).toFixed(0);const col=(s.cat?.color)||'#6B7280';
+    const pct=(s.hours/24*100).toFixed(0);const col=(s.cat?.color)||'#6B7280';
     const nm=s.cat?`${s.cat.emoji||''} ${s.cat.name}`:'Uncategorised';
     legend.innerHTML+=`<div class="pie-legend-item"><div class="pie-legend-dot" style="background:${col}"></div><span style="flex:1">${nm}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${pct}%</span></div>`;
   });
@@ -66,7 +66,7 @@ function renderAnalytics(){
   requestAnimationFrame(()=>{
     const ctx=canvas.getContext('2d');let a=-Math.PI/2;
     slices.forEach(s=>{
-      const sw=s.hours/totalAll*Math.PI*2;const col=(s.cat?.color)||'#6B7280';
+      const sw=s.hours/24*Math.PI*2;const col=(s.cat?.color)||'#6B7280';
       ctx.beginPath();ctx.moveTo(74,74);ctx.arc(74,74,64,a,a+sw);ctx.closePath();
       ctx.fillStyle=col;ctx.fill();
       ctx.strokeStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#0D0D14':'#F4F3FF';
@@ -99,6 +99,62 @@ function renderAnalytics(){
     col.appendChild(fill);col.appendChild(lbl);bc.appendChild(col);
   }
   barCard.appendChild(bc);anGrid.appendChild(barCard);
+
+
+  // ── Persona Classification ──────────────────────────────────────────────────
+  const getCatPct = (id) => (catMap[id]?.hours || 0) / 24 * 100;
+
+  const personas = [
+    {
+      name: "Typical High School Student",
+      reality: "heavy school + sleep, moderate distractions",
+      profile: { sleep: 30, school: 25, study: 10, social: 8, entertain: 8, hangout: 5, eat: 5, transport: 4, personal: 3, chores: 2, exercise: 1, family: 2, hobbies: 2, compete: 0, work: 0 }
+    },
+    {
+      name: "High-Performing Student",
+      reality: "less distraction, more study + structured time",
+      profile: { sleep: 30, school: 25, study: 15, exercise: 5, eat: 5, transport: 4, personal: 4, family: 3, hobbies: 3, chores: 2, social: 2, entertain: 1.5, hangout: 1.5, compete: 1.5, work: 0 }
+    },
+    {
+      name: "Athlete-Focused Person",
+      reality: "more sleep + training, less wasted time",
+      profile: { sleep: 32, school: 22.5, exercise: 12.5, eat: 6, study: 8, personal: 5, transport: 4, family: 3, entertain: 3, social: 2, hangout: 2, chores: 2, hobbies: 1.5, compete: 3, work: 0 }
+    },
+    {
+      name: "Unstructured / Distracted Student",
+      reality: "high time waste → low productivity",
+      profile: { sleep: 25, school: 25, social: 15, entertain: 15, study: 5, hangout: 5, eat: 5, transport: 3, personal: 2, chores: 1.5, exercise: 0.5, family: 1.5, hobbies: 1.5, compete: 0, work: 0 }
+    },
+    {
+      name: "Balanced Lifestyle Person",
+      reality: "sustainable, not extreme",
+      profile: { sleep: 30, school: 25, study: 8, exercise: 5, eat: 6, transport: 4, personal: 4, family: 4, hobbies: 4, entertain: 3, social: 2.5, hangout: 3, chores: 2, compete: 0.5, work: 1 }
+    }
+  ];
+
+  let bestPersona = personas[0];
+  let minDiff = Infinity;
+
+  personas.forEach(p => {
+    let diff = 0;
+    ['sleep', 'school', 'study', 'social', 'entertain', 'hangout', 'eat', 'transport', 'personal', 'chores', 'exercise', 'family', 'hobbies', 'compete', 'work'].forEach(cat => {
+      diff += Math.pow(getCatPct(cat) - p.profile[cat], 2);
+    });
+    if (diff < minDiff) {
+      minDiff = diff;
+      bestPersona = p;
+    }
+  });
+
+  const personaCard = document.createElement('div');
+  personaCard.className = 'an-card full';
+  personaCard.innerHTML = `<div class="an-card-title">Time Persona</div>
+    <div class="an-card-sub">Based on your daily schedule distribution</div>
+    <div style="margin-top:10px; padding:12px; background:rgba(255,255,255,0.05); border-radius:8px; border:1px solid rgba(255,255,255,0.1)">
+      <div style="font-weight:bold; font-size:16px; color:var(--accent); margin-bottom:4px">📊 ${bestPersona.name}</div>
+      <div style="font-size:13px; color:var(--text)"><em>Reality:</em> ${bestPersona.reality}</div>
+    </div>`;
+  anGrid.appendChild(personaCard);
 
   // ── Insight card ─────────────────────────────────────────────────────────────
   // FIX: insights were generating but data was all-zero (totalH=0) due to the

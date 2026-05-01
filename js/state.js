@@ -4,21 +4,21 @@ const ROW_H=64;
 
 // Category system
 const CATEGORIES=[
-  {id:'eat',       name:'Eat',          emoji:'🍽',  color:'#F59E0B'},
-  {id:'chores',    name:'Chores',       emoji:'🧹',  color:'#6B7280'},
-  {id:'transport', name:'Transport',    emoji:'🚗',  color:'#3B82F6'},
+  {id:'sleep',     name:'Sleep',        emoji:'😴',  color:'#6366F1'},
+  {id:'school',    name:'School/Work',  emoji:'🏫',  color:'#FBBF24'},
   {id:'study',     name:'Study',        emoji:'📚',  color:'#8B5CF6'},
   {id:'exercise',  name:'Exercise',     emoji:'💪',  color:'#10B981'},
-  {id:'hangout',   name:'Hanging Out',  emoji:'😄',  color:'#EC4899'},
-  {id:'sleep',     name:'Sleep',        emoji:'😴',  color:'#6366F1'},
-  {id:'entertain', name:'Entertainment',emoji:'🎮',  color:'#F97316'},
-  {id:'compete',   name:'Competitions', emoji:'🏆',  color:'#EAB308'},
-  {id:'work',      name:'Work',         emoji:'💼',  color:'#14B8A6'},
+  {id:'eat',       name:'Eat',          emoji:'🍽',  color:'#F59E0B'},
+  {id:'transport', name:'Transport',    emoji:'🚗',  color:'#3B82F6'},
   {id:'personal',  name:'Personal Care',emoji:'🧴',  color:'#A78BFA'},
   {id:'family',    name:'Family Time',  emoji:'👨‍👩‍👧',  color:'#FB7185'},
   {id:'hobbies',   name:'Hobbies',      emoji:'🎨',  color:'#34D399'},
+  {id:'entertain', name:'Entertainment',emoji:'🎮',  color:'#F97316'},
   {id:'social',    name:'Social Media', emoji:'📱',  color:'#60A5FA'},
-  {id:'school',    name:'School',       emoji:'🏫',  color:'#FBBF24'},
+  {id:'hangout',   name:'Hanging Out',  emoji:'😄',  color:'#EC4899'},
+  {id:'chores',    name:'Chores',       emoji:'🧹',  color:'#6B7280'},
+  {id:'compete',   name:'Competitions', emoji:'🏆',  color:'#EAB308'},
+  {id:'work',      name:'Work',         emoji:'💼',  color:'#14B8A6'},
 ];
 const CAT_MAP=Object.fromEntries(CATEGORIES.map(c=>[c.id,c]));
 
