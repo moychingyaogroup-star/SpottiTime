@@ -5,8 +5,9 @@ class BusinessButton {
     }
 
     render() {
+        const isActive = window.location.pathname.endsWith('business.html') ? 'active' : '';
         this.container.innerHTML = `
-            <a href="#" class="nav-item">
+            <a href="business.html" class="nav-item ${isActive}">
                 <i class="fas fa-briefcase" style="color: var(--color-social-media);"></i>
                 <span>Business</span>
             </a>

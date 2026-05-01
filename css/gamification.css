@@ -1,0 +1,135 @@
+/* Gamification UI Styles */
+
+/* Points & Currency Display */
+.gamification-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-hover);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+}
+
+.gamification-header > div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#points-display {
+    color: var(--accent-color);
+}
+
+#currency-display {
+    color: #ffd633;
+}
+
+/* Flappy Bird */
+.flappy-bird {
+    position: absolute;
+    left: -50px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 100;
+    user-select: none;
+    animation-name: flyAcross, flapUpDown;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-direction: normal, alternate;
+}
+
+@keyframes flyAcross {
+    from {
+        left: -50px;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+@keyframes flapUpDown {
+    0% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(20px);
+    }
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100px);
+    }
+}
+
+/* Plant Section */
+.plant-section {
+    text-align: center;
+    padding: 16px;
+}
+
+.plant-display {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(to bottom, transparent 80%, #3a2e22 80%, #3a2e22 100%);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.plant-icon {
+    transition: all 0.5s ease;
+    z-index: 2;
+    margin-top: 10px;
+}
+
+.plant-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.plant-btn {
+    background: var(--bg-hover);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.plant-btn:hover:not(:disabled) {
+    background: var(--accent-color);
+    color: white;
+}
+
+.golden-apples-overlay {
+    position: absolute;
+    top: 10px;
+    font-size: 20px;
+    z-index: 3;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
