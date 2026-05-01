@@ -5,9 +5,8 @@ class ImportantDatesButton {
     }
 
     render() {
-        const isActive = window.location.pathname.endsWith('important-dates.html') ? 'active' : '';
         this.container.innerHTML = `
-            <a href="important-dates.html" class="nav-item ${isActive}">
+            <a href="#" class="nav-item">
                 <i class="far fa-flag" style="color: var(--text-secondary);"></i>
                 <span>Important Dates</span>
             </a>

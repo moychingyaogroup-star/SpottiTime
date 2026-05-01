@@ -23,8 +23,14 @@ class AnalyticsButton {
             const analyticsContainer = document.getElementById('analytics-container');
             if (analyticsContainer) {
                 analyticsContainer.style.display = 'flex'; // Or block depending on CSS
+            } else {
+                console.error("analytics-container not found!");
             }
-            document.getElementById('schedule-container').style.display = 'none';
+
+            const scheduleContainer = document.getElementById('schedule-container');
+            if (scheduleContainer) {
+                scheduleContainer.style.display = 'none';
+            }
 
             // Update header text
             const header = document.querySelector('.header-left h2');
