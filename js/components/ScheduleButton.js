@@ -8,11 +8,7 @@ class ScheduleButton {
     render() {
         const isActive = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' ? 'active' : '';
         this.container.innerHTML = `
-<<<<<<< feature/add-analytics-view-1811341795032711295
-            <a href="#" class="nav-item active" id="nav-schedule">
-=======
-            <a href="index.html" class="nav-item ${isActive}">
->>>>>>> main
+            <a href="#" class="nav-item ${isActive || 'active'}" id="nav-schedule">
                 <i class="far fa-calendar-alt" style="color: var(--color-family-time);"></i>
                 <span>Schedule</span>
             </a>
