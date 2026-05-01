@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/schedule.css">
     <link rel="stylesheet" href="css/right-panel.css">
-<<<<<<< feature/add-analytics-view-1811341795032711295
     <link rel="stylesheet" href="css/analytics.css">
-=======
     <link rel="stylesheet" href="css/social.css">
->>>>>>> main
+    <link rel="stylesheet" href="css/gamification.css">
 </head>
 <body>
     <div class="app-container">
@@ -61,6 +59,10 @@
                         <button class="btn-today">Today</button>
                         <span class="current-date">Today</span>
                         <button class="nav-arrow"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="gamification-header">
+                        <div title="Points"><i class="fas fa-star" style="color: var(--accent-color);"></i><span id="points-display">0 pts</span></div>
+                        <div title="Golden Apples"><span id="currency-display"><i class="fas fa-apple-alt" style="color: #ffd633; margin-right: 4px;"></i>0</span></div>
                     </div>
                     <button class="notifications"><i class="fas fa-bell"></i></button>
                 </div>
@@ -274,10 +276,9 @@
     <script src="js/components/FriendsButton.js"></script>
     <script src="js/components/MessagesButton.js"></script>
     <script src="js/components/BusinessButton.js"></script>
-<<<<<<< feature/add-analytics-view-1811341795032711295
     <script src="js/components/AnalyticsView.js"></script>
-=======
+    <script src="js/points.js"></script>
+    <script src="js/currency.js"></script>
     <script src="js/schedule-workspace.js"></script>
->>>>>>> main
 </body>
 </html>

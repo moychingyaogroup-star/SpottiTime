@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
         btnEmoji.innerHTML = '<i class="far fa-smile"></i>';
         btnEmoji.title = "Add Emoji";
 
+        const btnComplete = document.createElement('button');
+        btnComplete.innerHTML = '<i class="fas fa-check"></i>';
+        btnComplete.title = "Complete Task";
+
         const btnDelete = document.createElement('button');
         btnDelete.innerHTML = '<i class="fas fa-trash"></i>';
         btnDelete.title = "Delete Block";
@@ -63,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toolbar.appendChild(btnDecrease);
         toolbar.appendChild(btnIncrease);
         toolbar.appendChild(btnEmoji);
+        toolbar.appendChild(btnComplete);
         toolbar.appendChild(btnDelete);
 
         // Editable Content
@@ -87,6 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentFontSize > 8) {
                 currentFontSize -= 2;
                 content.style.fontSize = currentFontSize + 'px';
+            }
+        });
+
+        btnComplete.addEventListener('click', () => {
+            if (window.pointsSystem && !block.classList.contains('completed')) {
+                window.pointsSystem.addPoints(50);
+                block.classList.add('completed');
+                content.style.textDecoration = 'line-through';
+                content.style.opacity = '0.7';
+                btnComplete.disabled = true;
             }
         });
 
