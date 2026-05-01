@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpottiTime</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/important-dates.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar-container">
+            <div class="logo-container">
+                <div class="logo-icon"></div>
+                <h1>SpottiTime</h1>
+            </div>
+
+            <div id="profile-button-container"></div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>PERSONAL</h3>
+                    <div id="schedule-button-container"></div>
+                    <div id="important-dates-button-container"></div>
+                    <div id="categories-button-container"></div>
+                    <div id="analytics-button-container"></div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>SOCIAL</h3>
+                    <div id="friends-button-container"></div>
+                    <div id="messages-button-container"></div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>WORK</h3>
+                    <div id="business-button-container"></div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header" style="justify-content: flex-start; padding-left: 20px;">
+                <div class="header-left">
+                    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+                    <h2 style="display: flex; align-items: center; gap: 8px;">Important Dates <span style="color: #ffd633;">🔔</span></h2>
+                </div>
+            </header>
+
+            <div class="important-dates-container">
+                <div class="important-dates-header">
+                    <h2>Important Dates</h2>
+                    <p>Birthdays, deadlines, milestones — never forget what matters</p>
+                </div>
+
+                <div class="dates-grid" id="dates-grid">
+                    <div class="date-card add-date-card" id="add-date-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Important Date</span>
+                    </div>
+
+                    <div class="date-card important-date-card">
+                        <div class="date-card-icon">🎂</div>
+                        <h3 class="date-card-title">Alex's Birthday</h3>
+                        <div class="date-card-date">May 15, 2025</div>
+                        <div class="date-card-desc">Don't forget to wish him!</div>
+                    </div>
+
+                    <div class="date-card important-date-card">
+                        <div class="date-card-icon">🩺</div>
+                        <h3 class="date-card-title">Health Checkup</h3>
+                        <div class="date-card-date">Jun 10, 2025</div>
+                        <div class="date-card-desc">Annual checkup at 10 AM</div>
+                    </div>
+
+                    <div class="date-card important-date-card">
+                        <div class="date-card-icon">📝</div>
+                        <h3 class="date-card-title">Assignment Due</h3>
+                        <div class="date-card-date">Oct 20, 2025</div>
+                        <div class="date-card-desc">Final project submission</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding an important date -->
+    <div class="modal-overlay" id="add-date-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Important Date</h2>
+                <button class="close-btn" id="close-modal-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="add-date-form">
+                <div class="form-group">
+                    <label for="date-title">Title</label>
+                    <input type="text" id="date-title" placeholder="e.g. Alex's Birthday" required>
+                </div>
+                <div class="form-group">
+                    <label for="date-value">Date</label>
+                    <input type="date" id="date-value" required>
+                </div>
+                <div class="form-group">
+                    <label for="date-emoji">Emoji</label>
+                    <input type="text" id="date-emoji" placeholder="🎂" value="🎂">
+                </div>
+                <div class="form-group">
+                    <label for="date-desc">Description (optional)</label>
+                    <input type="text" id="date-desc" placeholder="Short note...">
+                </div>
+                <button type="submit" class="submit-btn">Add Date</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/components/ProfileButton.js"></script>
+    <script src="js/components/ScheduleButton.js"></script>
+    <script src="js/components/CategoriesButton.js"></script>
+    <script src="js/components/ImportantDatesButton.js"></script>
+    <script src="js/components/AnalyticsButton.js"></script>
+    <script src="js/components/FriendsButton.js"></script>
+    <script src="js/components/MessagesButton.js"></script>
+    <script src="js/components/BusinessButton.js"></script>
+    <script src="js/important-dates.js"></script>
+</body>
+</html>
