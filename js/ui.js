@@ -7,7 +7,7 @@ function renderProfile(){
 
   // Use real Google name/photo if signed in, otherwise fall back to defaults
   const gUser    = window.TF_USER;
-  const dispName = gUser?.displayName || 'Time Architect';
+  const dispName = window.TF_PROFILE?.displayName || gUser?.displayName || 'Time Architect';
   const dispEmail= gUser?.email       || '';
   const photoURL = gUser?.photoURL    || '';
   const avatarHtml = photoURL
