@@ -47,12 +47,13 @@ async function _ensureProfile(user) {
 function _updateSidebarUser(user, profile) {
   const nameEl = document.querySelector('.sb-user-name');
   const avEl   = document.getElementById('sb-av');
-  if (nameEl) nameEl.textContent = user.displayName||'Time Architect';
+  const dispName = profile?.displayName || user.displayName || 'Time Architect';
+  if (nameEl) nameEl.textContent = dispName;
   if (avEl) {
     if (user.photoURL) {
       avEl.innerHTML = `<img src="${user.photoURL}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;display:block" referrerpolicy="no-referrer"/>`;
     } else {
-      avEl.textContent = (user.displayName||'U')[0].toUpperCase();
+      avEl.textContent = dispName[0].toUpperCase();
     }
   }
   const tagEl = document.getElementById('my-tag-val');
