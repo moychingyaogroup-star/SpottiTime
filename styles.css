@@ -1166,3 +1166,34 @@ a{color:inherit;text-decoration:none}
 .block:hover .block-mobile-extend { background: rgba(0,0,0,.52); border-color: rgba(255,255,255,.5); }
 .block-mobile-extend:hover { transform: scale(1.08); background: rgba(124,58,237,.65) !important; border-color: rgba(255,255,255,.6) !important; }
 .block-mobile-extend:active { transform: scale(.95); }
+
+.task-item {
+    transition: all 0.2s ease;
+}
+.task-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#plant-container {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), var(--card-bg)) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 0 10px rgba(var(--accent-rgb, 59, 130, 246), 0.2) !important;
+}
+
+.task-add-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+.task-add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb, 59, 130, 246), 0.4);
+    filter: brightness(1.1);
+}

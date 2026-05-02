@@ -1,11 +1,14 @@
 // ── CURRENCY & PLANT SYSTEM ──────────────────────────────────────────────────
 
 function getPlantState() {
-    return gs('PLANT_STATE') || {
+    const state = gs('PLANT_STATE') || {
         level: 1, // 1 to 10
         lastWateredDate: null,
         goldenApplesAvailable: 0
     };
+    if (typeof state.level === 'undefined') state.level = 1;
+    if (typeof state.goldenApplesAvailable === 'undefined') state.goldenApplesAvailable = 0;
+    return state;
 }
 
 function savePlantState(state) {

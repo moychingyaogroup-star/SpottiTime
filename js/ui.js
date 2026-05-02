@@ -20,7 +20,7 @@ function renderProfile(){
     <div class="profile-hero">
       <div class="ph-avatar" style="font-size:${photoURL?'0':'inherit'}">${avatarHtml}<div class="ph-lvl">Lv ${level}</div></div>
       <div class="ph-stats">
-        <div class="ph-name">${escHtml(dispName)}</div>
+        <div class="ph-name">${escHtml(dispName)}<span onclick="editUsername()" style="cursor:pointer;font-size:14px;margin-left:6px;" title="Edit Username">✏️</span></div>
         ${dispEmail?`<div class="ph-tag" style="font-size:11px;color:var(--muted);margin-bottom:4px">${escHtml(dispEmail)}</div>`:''}
         <div class="ph-tag">Active: ${ac.name} (${ac.rarity}) · ${ac.bonus} bonus</div>
         <div class="ph-row">
@@ -73,7 +73,7 @@ function showModal({title,body,btn,onConfirm}){
 }
 
 
-const VIEW_TITLES={home:'Schedule',categories:'Categories','important-dates':'Important Dates',analytics:'Analytics',friends:'Friends',messages:'Messages',business:'Business',profile:'Profile'};
+const VIEW_TITLES={home:'Schedule',categories:'Categories','important-dates':'Important Dates',analytics:'Analytics',friends:'Friends',messages:'Messages',business:'Business',employees:'Employees',profile:'Profile'};
 function switchView(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item[data-view]').forEach(b=>b.classList.remove('active'));
@@ -90,6 +90,7 @@ function switchView(view){
   if(view==='friends')renderFriends();
   if(view==='messages')renderMsgList();
   if(view==='business')renderBusiness();
+  if(view==='employees')renderEmployees();
   if(view==='profile')renderProfile();
   beep('click');
 }
@@ -110,3 +111,17 @@ function init(){
 }
 // init() is called by auth.js after Google sign-in resolves.
 // Do NOT call it here directly — auth.js owns the boot sequence.
+
+function editUsername() {
+  const newName = prompt("Enter a new username:");
+  if (newName && newName.trim() !== '') {
+    window.TF_PROFILE.displayName = newName.trim();
+    if (typeof updateProfile === 'function') {
+      updateProfile({ displayName: newName.trim() });
+    }
+    if (window.TF_USER && typeof _updateSidebarUser === 'function') {
+      _updateSidebarUser(window.TF_USER, window.TF_PROFILE);
+    }
+    renderProfile();
+  }
+}
