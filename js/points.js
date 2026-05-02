@@ -81,46 +81,62 @@ function initBird() {
         transition: transform 0.1s;
         user-select: none;
     `;
-    bird.innerHTML = '🦅';
+    bird.innerHTML = '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.928 2.627a1 1 0 0 0-1.216-.484L2.83 8.351a1 1 0 0 0 .114 1.884l5.633 1.878 1.878 5.633a1 1 0 0 0 1.884.114l6.208-17.882a1 1 0 0 0-.619-1.351z" fill="var(--accent)" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.577 10.229l4.5 4.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>';
     document.body.appendChild(bird);
 
-    let birdX = -50;
-    let birdY = window.innerHeight * 0.2;
+    let birdX, birdY, baseY, direction;
     let amplitude = 50;
     let time = 0;
-    let flap = true;
+    let isVanishing = false;
+
+    function resetBird() {
+        direction = Math.random() > 0.5 ? 1 : -1;
+        baseY = window.innerHeight * (0.15 + Math.random() * 0.65);
+        birdX = direction === 1 ? -100 : window.innerWidth + 100;
+        birdY = baseY;
+        bird.style.transition = 'transform 0.1s';
+    }
+
+    resetBird();
 
     function animateBird() {
-        birdX += 2;
-        time += 0.05;
-        birdY = (window.innerHeight * 0.2) + Math.sin(time) * amplitude;
+        if (!isVanishing) {
+            birdX += 2 * direction;
+            time += 0.05;
+            birdY = baseY + Math.sin(time) * amplitude;
 
-        // Flap effect
-        if (Math.sin(time * 5) > 0) {
-            bird.style.transform = 'scaleY(0.8)';
-        } else {
-            bird.style.transform = 'scaleY(1)';
-        }
+            // Flap effect
+            let scaleX = direction === 1 ? 1 : -1;
+            let scaleY = Math.sin(time * 5) > 0 ? 0.8 : 1;
 
-        bird.style.left = birdX + 'px';
-        bird.style.top = birdY + 'px';
+            bird.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+            bird.style.left = birdX + 'px';
+            bird.style.top = birdY + 'px';
 
-        if (birdX > window.innerWidth + 50) {
-            birdX = -100; // Reset
-            birdY = Math.random() * (window.innerHeight * 0.6) + 100;
+            if ((direction === 1 && birdX > window.innerWidth + 100) ||
+                (direction === -1 && birdX < -100)) {
+                resetBird();
+            }
         }
 
         requestAnimationFrame(animateBird);
     }
 
     bird.addEventListener('click', (e) => {
+        if (isVanishing) return;
         // Award 25 points
         awardPoints(25, e.clientX, e.clientY);
         showToast('Caught the bird! +25 pts 🦅');
         beep('milestone');
 
-        // Make the bird fly away fast
-        birdX = window.innerWidth + 100;
+        isVanishing = true;
+        bird.style.transition = 'transform 0.5s';
+        bird.style.transform = 'scale(0) rotate(360deg)';
+
+        setTimeout(() => {
+            isVanishing = false;
+            resetBird();
+        }, 500);
     });
 
     animateBird();
