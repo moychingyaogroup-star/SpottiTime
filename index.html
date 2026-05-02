@@ -73,6 +73,7 @@
     <div class="sb-nav-section">
       <div class="sb-nav-section-label">Work</div>
       <button class="nav-item"        data-view="business"        onclick="switchView('business')">       <span class="ni">🏢</span>Business</button>
+      <button class="nav-item"        data-view="employees"       onclick="switchView('employees')">      <span class="ni">💼</span>Employees</button>
     </div>
   </div>
   <div class="sb-streak" id="sb-streak-widget">
@@ -221,6 +222,11 @@
   <div class="view" id="view-profile">
     <div class="view-scroll"><div class="view-inner" id="profile-inner"></div></div>
   </div>
+
+  <!-- EMPLOYEES FINANCES -->
+  <div class="view" id="view-employees">
+    <div class="view-scroll"><div class="view-inner"></div></div>
+  </div>
 </div><!-- #main-wrap -->
 
 <!-- RIGHT PANEL -->
@@ -231,7 +237,7 @@
     <div class="rp-title">📋 Daily Tasks</div>
     <div style="display:flex; gap:5px; margin-bottom:10px;">
         <input id="new-task-input" class="tf-input" placeholder="Add a task..." style="flex:1;" />
-        <button onclick="addTask()" style="background:var(--accent); color:#fff; border:none; border-radius:6px; padding:0 12px; cursor:pointer; font-weight:bold;">+</button>
+        <button class="task-add-btn" onclick="addTask()">+</button>
     </div>
     <div id="task-list" style="max-height: 200px; overflow-y: auto;"></div>
   </div>
@@ -362,6 +368,7 @@
 <script src="./js/business.js"></script>
 <script src="./js/points.js"></script>
 <script src="./js/currency.js"></script>
+<script src="./js/employees.js"></script>
 <script src="./js/ui.js"></script>
 </body>
 </html>

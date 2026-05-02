@@ -79,6 +79,7 @@ const SK={
   STREAK:'tf_streak_v6',SCORE:'tf_score_v4',CHARS:'tf_chars_v4',
   MISSIONS:'tf_missions_v4',NOTIFS:'tf_notifs_v2',
   DATES:'tf_dates_v1',THEME:'tf_theme_v1',
+  PLANT_STATE:'tf_plant_v1', TASKS:'tf_tasks_v1', GOLDEN_APPLES:'tf_apples_v1'
 };
 // ─── Per-user storage: every key is prefixed with the Firebase UID ────────────
 // getUserPrefix() is defined in auth.js and returns  "uid_"  or  "guest_"
