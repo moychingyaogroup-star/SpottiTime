@@ -54,7 +54,18 @@ function renderAnalytics(){
   const pieCard=document.createElement('div');pieCard.className='an-card';
   pieCard.innerHTML=`<div class="an-card-title">Time by Category</div><div class="an-card-sub">Today's time distribution</div>`;
   const pw=document.createElement('div');pw.className='pie-wrap';
-  const canvas=document.createElement('canvas');canvas.width=148;canvas.height=148;pw.appendChild(canvas);
+  const canvasWrapper = document.createElement('div');
+  canvasWrapper.style.width = '100%';
+  canvasWrapper.style.maxWidth = '200px';
+  canvasWrapper.style.aspectRatio = '1';
+  canvasWrapper.style.position = 'relative';
+
+  const canvas=document.createElement('canvas');
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvasWrapper.appendChild(canvas);
+  pw.appendChild(canvasWrapper);
+
   const legend=document.createElement('div');legend.className='pie-legend';
   slices.forEach(s=>{
     const pct=(s.hours/24*100).toFixed(0);const col=(s.cat?.color)||'#6B7280';
@@ -63,22 +74,51 @@ function renderAnalytics(){
   });
   pw.appendChild(legend);pieCard.appendChild(pw);anGrid.appendChild(pieCard);
 
-  requestAnimationFrame(()=>{
-    const ctx=canvas.getContext('2d');let a=-Math.PI/2;
+  const drawChart = () => {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvasWrapper.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    if (w === 0 || h === 0) return;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+
+    const ctx=canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const cx = w / 2;
+    const cy = h / 2;
+    const r = Math.min(cx, cy) * 0.9;
+
+    let a=-Math.PI/2;
     slices.forEach(s=>{
       const sw=s.hours/24*Math.PI*2;const col=(s.cat?.color)||'#6B7280';
-      ctx.beginPath();ctx.moveTo(74,74);ctx.arc(74,74,64,a,a+sw);ctx.closePath();
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+sw);ctx.closePath();
       ctx.fillStyle=col;ctx.fill();
       ctx.strokeStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#0D0D14':'#F4F3FF';
       ctx.lineWidth=2;ctx.stroke();a+=sw;
     });
-    ctx.beginPath();ctx.arc(74,74,26,0,Math.PI*2);
+    ctx.beginPath();ctx.arc(cx,cy,r*0.4,0,Math.PI*2);
     ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#16161F':'#FFFFFF';ctx.fill();
     ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#fff':'#111';
-    ctx.textAlign='center';ctx.font='bold 9px DM Sans,sans-serif';
-    ctx.fillText(totalH.toFixed(1)+'h',74,75);
-    ctx.font='8px DM Sans,sans-serif';ctx.fillStyle='rgba(128,128,128,.8)';
-    ctx.fillText('scheduled',74,86);
+    ctx.textAlign='center';
+
+    const fontSizeVal = Math.max(9, w * 0.08);
+    ctx.font=`bold ${fontSizeVal}px DM Sans,sans-serif`;
+    ctx.fillText(totalH.toFixed(1)+'h',cx,cy + fontSizeVal * 0.1);
+
+    const subFontSizeVal = Math.max(8, w * 0.06);
+    ctx.font=`${subFontSizeVal}px DM Sans,sans-serif`;
+    ctx.fillStyle='rgba(128,128,128,.8)';
+    ctx.fillText('scheduled',cx,cy + fontSizeVal * 0.1 + subFontSizeVal * 1.2);
+  };
+
+  requestAnimationFrame(drawChart);
+  window.addEventListener('resize', () => {
+    if (document.getElementById('analytics-content')) {
+      requestAnimationFrame(drawChart);
+    }
   });
 
   // ── Bar chart — hourly density ──────────────────────────────────────────────

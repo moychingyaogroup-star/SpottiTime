@@ -85,7 +85,15 @@ const SK={
 // getUserPrefix() is defined in auth.js and returns  "uid_"  or  "guest_"
 function _pfx(k){ return (window.getUserPrefix ? window.getUserPrefix() : 'guest_') + k; }
 function gs(k){  try{return JSON.parse(localStorage.getItem(_pfx(SK[k])))||null}catch{return null}}
-function ss(k,d){localStorage.setItem(_pfx(SK[k]),JSON.stringify(d))}
+function ss(k, d) {
+  const skKey = SK[k];
+  localStorage.setItem(_pfx(skKey), JSON.stringify(d));
+  if (['tf_streak_v6', 'tf_score_v4', 'tf_chars_v4', 'tf_plant_v1', 'tf_tasks_v1', 'tf_apples_v1'].includes(skKey)) {
+    if (typeof syncEconomyToCloud === 'function') {
+      syncEconomyToCloud(skKey, d);
+    }
+  }
+}
 
 // Raw helpers for dynamic keys (e.g. per-month business data) — also prefixed
 function gsRaw(key){try{return JSON.parse(localStorage.getItem(_pfx(key)))||null}catch{return null}}

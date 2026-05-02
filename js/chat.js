@@ -42,19 +42,13 @@ async function addFriendByTag() {
   const existing = await _fdb().collection('users').doc(_uid()).collection('friends').doc(friendUid).get();
   if (existing.exists) { showToast('Already friends with '+friendData.displayName); return; }
 
-  // Add to my friends list
-  const friendEntry = {
-    uid:         friendUid,
-    displayName: friendData.displayName||'Friend',
-    photoURL:    friendData.photoURL||'',
-    friendTag:   friendData.friendTag||'',
-    addedAt:     Date.now(),
-  };
-  await _fdb().collection('users').doc(_uid()).collection('friends').doc(friendUid).set(friendEntry);
+  // Check if a request already exists
+  const reqExisting = await _fdb().collection('users').doc(friendUid).collection('friend_requests').doc(_uid()).get();
+  if (reqExisting.exists) { showToast('Request already sent to '+friendData.displayName); return; }
 
-  // Also add me to their friends list (mutual)
+  // Send request to target user
   const me = window.TF_PROFILE;
-  await _fdb().collection('users').doc(friendUid).collection('friends').doc(_uid()).set({
+  await _fdb().collection('users').doc(friendUid).collection('friend_requests').doc(_uid()).set({
     uid:         _uid(),
     displayName: window.TF_USER?.displayName||'Friend',
     photoURL:    window.TF_USER?.photoURL||'',
@@ -63,9 +57,8 @@ async function addFriendByTag() {
   });
 
   input.value = '';
-  showToast('🎉 '+friendData.displayName+' added as friend!');
-  beep('complete');
-  renderFriends();
+  showToast('Friend request sent to ' + friendData.displayName + '!');
+  beep('milestone');
 }
 
 async function _loadFriends() {
@@ -147,6 +140,75 @@ function closeFriendSched() {
 }
 
 // ── Render Friends tab ───────────────────────────────────────────────────────
+async function acceptFriendRequest(friendUid, friendName, friendPhoto, friendTag) {
+  if (!_uid()) return;
+  // Add to my friends
+  await _fdb().collection('users').doc(_uid()).collection('friends').doc(friendUid).set({
+    uid: friendUid,
+    displayName: friendName || 'Friend',
+    photoURL: friendPhoto || '',
+    friendTag: friendTag || '',
+    addedAt: Date.now(),
+  });
+
+  // Add me to their friends
+  const me = window.TF_PROFILE;
+  await _fdb().collection('users').doc(friendUid).collection('friends').doc(_uid()).set({
+    uid: _uid(),
+    displayName: window.TF_USER?.displayName || 'Friend',
+    photoURL: window.TF_USER?.photoURL || '',
+    friendTag: me?.friendTag || '',
+    addedAt: Date.now(),
+  });
+
+  // Remove request
+  await _fdb().collection('users').doc(_uid()).collection('friend_requests').doc(friendUid).delete();
+
+  showToast('🎉 ' + friendName + ' is now your friend!');
+  beep('complete');
+  renderFriendRequests();
+  renderFriends();
+}
+
+async function rejectFriendRequest(friendUid) {
+  if (!_uid()) return;
+  await _fdb().collection('users').doc(_uid()).collection('friend_requests').doc(friendUid).delete();
+  renderFriendRequests();
+}
+
+async function renderFriendRequests() {
+  if (!_uid()) return;
+  const list = document.getElementById('friend-requests-list');
+  if (!list) return;
+
+  const snap = await _fdb().collection('users').doc(_uid()).collection('friend_requests').get();
+  if (snap.empty) {
+    list.innerHTML = '';
+    return;
+  }
+
+  let html = '<div style="margin-bottom: 15px; font-weight: bold; color: var(--text);">Friend Requests</div>';
+  snap.forEach(doc => {
+    const data = doc.data();
+    const avatarHtml = data.photoURL
+      ? `<img src="${data.photoURL}" style="width:38px;height:38px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer"/>`
+      : `<div style="width:38px;height:38px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff">${(data.displayName||'?')[0].toUpperCase()}</div>`;
+
+    html += `
+      <div class="friend-card" style="margin-bottom: 10px;">
+        ${avatarHtml}
+        <div class="fc-info">
+          <div class="fc-name">${data.displayName}</div>
+          <div class="fc-status">${data.friendTag}</div>
+        </div>
+        <button onclick="acceptFriendRequest('${doc.id}', '${data.displayName}', '${data.photoURL}', '${data.friendTag}')" style="background:#10B981; color:#fff; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; margin-right:5px;">✓</button>
+        <button onclick="rejectFriendRequest('${doc.id}')" style="background:#EF4444; color:#fff; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;">✕</button>
+      </div>
+    `;
+  });
+  list.innerHTML = html;
+}
+
 async function renderFriends() {
   const list = document.getElementById('friend-list');
   list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Loading friends…</div>';
@@ -249,7 +311,12 @@ async function renderMsgList() {
 function toggleChat() {
   const ov = document.getElementById('chat-overlay');
   if (ov.classList.contains('open')) { ov.classList.remove('open'); _cleanupChat(); }
-  else { renderChatFriendList(); ov.classList.add('open'); backToChatList(); }
+  else {
+    renderFriendRequests();
+    renderChatFriendList();
+    ov.classList.add('open');
+    backToChatList();
+  }
 }
 function handleChatOvClick(e) { if (e.target.id === 'chat-overlay') toggleChat(); }
 

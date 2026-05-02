@@ -65,6 +65,35 @@ function _updateSidebarUser(user, profile) {
   if (tagEl && profile) tagEl.textContent = profile.friendTag||'…';
 }
 
+async function syncEconomyFromCloud() {
+  if (!window.TF_USER) return;
+  const ref = _db.collection('users').doc(window.TF_USER.uid);
+  try {
+    const doc = await ref.get();
+    if (doc.exists) {
+      const data = doc.data();
+      const keys = ['tf_streak_v6', 'tf_score_v4', 'tf_chars_v4', 'tf_plant_v1', 'tf_tasks_v1', 'tf_apples_v1'];
+      keys.forEach(k => {
+        if (data[k] !== undefined) {
+          localStorage.setItem(window.getUserPrefix() + k, JSON.stringify(data[k]));
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('Failed to sync economy from cloud:', err);
+  }
+}
+
+async function syncEconomyToCloud(key, data) {
+  if (!window.TF_USER) return;
+  const ref = _db.collection('users').doc(window.TF_USER.uid);
+  try {
+    await ref.set({ [key]: data }, { merge: true });
+  } catch (err) {
+    console.warn('Failed to sync economy to cloud:', err);
+  }
+}
+
 _auth.onAuthStateChanged(async function(user) {
   const loginScreen = document.getElementById('login-screen');
   const appEl       = document.getElementById('app');
@@ -72,6 +101,7 @@ _auth.onAuthStateChanged(async function(user) {
     window.TF_USER = user;
     try { window.TF_PROFILE = await _ensureProfile(user); }
     catch(e) { console.warn(e); window.TF_PROFILE = {friendTag:'…',shareSchedule:false}; }
+    await syncEconomyFromCloud();
     loginScreen.style.display = 'none';
     appEl.style.display = '';
     _updateSidebarUser(user, window.TF_PROFILE);
