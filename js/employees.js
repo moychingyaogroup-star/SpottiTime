@@ -25,15 +25,15 @@ function renderEmployees() {
         mtdCost += calculateCost(emp, 'MTD');
     });
 
-    let html = \`
+    let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2>Employee Finances</h2>
             <div style="display:flex; gap:10px;">
                 <select class="tf-input" onchange="setEmpFilter(this.value)" style="width:auto;">
-                    <option value="Today" \${currentEmpFilter === 'Today' ? 'selected' : ''}>Today</option>
-                    <option value="WTD" \${currentEmpFilter === 'WTD' ? 'selected' : ''}>WTD</option>
-                    <option value="MTD" \${currentEmpFilter === 'MTD' ? 'selected' : ''}>MTD</option>
-                    <option value="YTD" \${currentEmpFilter === 'YTD' ? 'selected' : ''}>YTD</option>
+                    <option value="Today" ${currentEmpFilter === 'Today' ? 'selected' : ''}>Today</option>
+                    <option value="WTD" ${currentEmpFilter === 'WTD' ? 'selected' : ''}>WTD</option>
+                    <option value="MTD" ${currentEmpFilter === 'MTD' ? 'selected' : ''}>MTD</option>
+                    <option value="YTD" ${currentEmpFilter === 'YTD' ? 'selected' : ''}>YTD</option>
                 </select>
                 <button class="task-add-btn" onclick="addEmpFinance()">+ Add Employee</button>
             </div>
@@ -41,15 +41,15 @@ function renderEmployees() {
 
         <div style="display:flex; gap:15px; margin-bottom:20px;">
             <div class="card-base" style="flex:1; padding:20px; text-align:center;">
-                <div style="font-size:24px; font-weight:bold; color:var(--accent);">$\${ytdCost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+                <div style="font-size:24px; font-weight:bold; color:var(--accent);">$${ytdCost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
                 <div style="color:var(--muted); font-size:12px; margin-top:5px;">Total YTD Cost</div>
             </div>
             <div class="card-base" style="flex:1; padding:20px; text-align:center;">
-                <div style="font-size:24px; font-weight:bold; color:var(--accent);">$\${mtdCost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+                <div style="font-size:24px; font-weight:bold; color:var(--accent);">$${mtdCost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
                 <div style="color:var(--muted); font-size:12px; margin-top:5px;">Total MTD Cost</div>
             </div>
             <div class="card-base" style="flex:1; padding:20px; text-align:center;">
-                <div style="font-size:24px; font-weight:bold; color:var(--text);">\${activeEmployees}</div>
+                <div style="font-size:24px; font-weight:bold; color:var(--text);">${activeEmployees}</div>
                 <div style="color:var(--muted); font-size:12px; margin-top:5px;">Active Employees</div>
             </div>
         </div>
@@ -61,39 +61,44 @@ function renderEmployees() {
                         <th style="padding:10px;">Name</th>
                         <th style="padding:10px;">Pay Type</th>
                         <th style="padding:10px;">Pay Rate</th>
-                        <th style="padding:10px;">Hours Work (\${currentEmpFilter})</th>
-                        <th style="padding:10px;">Leave (\${currentEmpFilter})</th>
-                        <th style="padding:10px;">Cost (\${currentEmpFilter})</th>
+                        <th style="padding:10px;">Hours Work (${currentEmpFilter})</th>
+                        <th style="padding:10px;">Leave (${currentEmpFilter})</th>
+                        <th style="padding:10px;">Cost (${currentEmpFilter})</th>
                         <th style="padding:10px;">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-    \`;
+                <tbody id="emp-tbody">
+    `;
 
     if (emps.length === 0) {
-        html += \`<tr><td colspan="7" style="padding:20px; text-align:center; color:var(--muted);">No employees added yet.</td></tr>\`;
+        html += `<tr><td colspan="7" style="padding:20px; text-align:center; color:var(--muted);">No employees added yet.</td></tr>`;
     } else {
         emps.forEach((emp, index) => {
             const cost = calculateCost(emp, currentEmpFilter);
-            html += \`
+
+            // Only allow hour edits for Hourly employees to prevent UX confusion
+            const isHourly = emp.payType === 'Hourly';
+            const inputAttr = isHourly ? '' : 'disabled title="Salary costs are fixed" style="opacity: 0.5"';
+
+            html += `
                 <tr style="border-bottom:1px solid var(--border);">
-                    <td style="padding:10px;">\${escHtml(emp.name)}</td>
-                    <td style="padding:10px;">\${emp.payType}</td>
-                    <td style="padding:10px;">$\${emp.payRate}\${emp.payType === 'Hourly' ? '/hr' : '/yr'}</td>
-                    <td style="padding:10px;"><input type="number" class="tf-input" style="width:60px;" value="\${emp.hours[currentEmpFilter] || 0}" onchange="updateEmpHours(\${index}, '\${currentEmpFilter}', 'worked', this.value)"/></td>
-                    <td style="padding:10px;"><input type="number" class="tf-input" style="width:60px;" value="\${emp.leave[currentEmpFilter] || 0}" onchange="updateEmpHours(\${index}, '\${currentEmpFilter}', 'leave', this.value)"/></td>
-                    <td style="padding:10px; font-weight:bold;">$\${cost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                    <td style="padding:10px;"><button onclick="deleteEmpFinance(\${index})" style="background:none; border:none; cursor:pointer; color:#EF4444; font-size:16px;">🗑</button></td>
+                    <td style="padding:10px;">${escHtml(emp.name)}</td>
+                    <td style="padding:10px;">${escHtml(emp.payType)}</td>
+                    <td style="padding:10px;">$${emp.payRate}${isHourly ? '/hr' : '/yr'}</td>
+                    <td style="padding:10px;"><input type="number" class="tf-input" style="width:60px;" value="${emp.hours[currentEmpFilter] || 0}" onblur="updateEmpHours(${index}, '${currentEmpFilter}', 'worked', this.value)" ${inputAttr}/></td>
+                    <td style="padding:10px;"><input type="number" class="tf-input" style="width:60px;" value="${emp.leave[currentEmpFilter] || 0}" onblur="updateEmpHours(${index}, '${currentEmpFilter}', 'leave', this.value)" ${inputAttr}/></td>
+                    <td style="padding:10px; font-weight:bold;">$${cost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="padding:10px;"><button onclick="deleteEmpFinance(${index})" style="background:none; border:none; cursor:pointer; color:#EF4444; font-size:16px;">🗑</button></td>
                 </tr>
-            \`;
+            `;
         });
     }
 
-    html += \`
+    html += `
                 </tbody>
             </table>
         </div>
-    \`;
+    `;
 
     view.innerHTML = html;
 }
@@ -105,13 +110,13 @@ function setEmpFilter(val) {
 
 function calculateCost(emp, period) {
     let cost = 0;
-    const hours = emp.hours[period] || 0;
-    const leave = emp.leave[period] || 0;
+    const hours = Number(emp.hours[period]) || 0;
+    const leave = Number(emp.leave[period]) || 0;
 
     if (emp.payType === 'Hourly') {
-        cost = (parseFloat(hours) + parseFloat(leave)) * parseFloat(emp.payRate);
+        cost = (hours + leave) * Number(emp.payRate);
     } else if (emp.payType === 'Salary') {
-        const rate = parseFloat(emp.payRate);
+        const rate = Number(emp.payRate);
         if (period === 'Today') cost = rate / 260; // Approx working days in year
         else if (period === 'WTD') cost = rate / 52;
         else if (period === 'MTD') cost = rate / 12;
@@ -123,10 +128,13 @@ function calculateCost(emp, period) {
 
 function updateEmpHours(index, period, type, val) {
     const emps = getEmployees();
+    const numVal = parseFloat(val);
+    const finalVal = isNaN(numVal) ? 0 : numVal;
+
     if (type === 'worked') {
-        emps[index].hours[period] = parseFloat(val) || 0;
+        emps[index].hours[period] = finalVal;
     } else {
-        emps[index].leave[period] = parseFloat(val) || 0;
+        emps[index].leave[period] = finalVal;
     }
     saveEmployees(emps);
     renderEmployees();
@@ -135,7 +143,7 @@ function updateEmpHours(index, period, type, val) {
 function addEmpFinance() {
     showModal({
         title: 'Add Employee',
-        body: \`
+        body: `
             <label class="tf-label">Name</label>
             <input class="tf-input" id="ef-name" placeholder="John Doe"/>
             <label class="tf-label" style="margin-top:10px;">Pay Type</label>
@@ -145,7 +153,7 @@ function addEmpFinance() {
             </select>
             <label class="tf-label" style="margin-top:10px;">Pay Rate</label>
             <input class="tf-input" type="number" id="ef-rate" placeholder="e.g. 25 for Hourly, 60000 for Salary"/>
-        \`,
+        `,
         btn: 'Add',
         onConfirm: () => {
             const name = document.getElementById('ef-name').value.trim();
