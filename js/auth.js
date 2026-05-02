@@ -41,7 +41,12 @@ async function _ensureProfile(user) {
     await ref.set(profile);
     return profile;
   }
-  return snap.data();
+  const data = snap.data();
+  if (!data.friendTag) {
+    data.friendTag = await _getUniqueTag();
+    await ref.update({ friendTag: data.friendTag });
+  }
+  return data;
 }
 
 function _updateSidebarUser(user, profile) {
