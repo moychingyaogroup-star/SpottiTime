@@ -381,13 +381,27 @@ async function renderFriends() {
   const friends = await _loadFriends();
   _friendsCache = friends;
 
-  // Load sharing status for each friend
+  // Load sharing status AND live economy data for each friend
   const enriched = await Promise.all(friends.map(async f => {
     try {
       const doc = await _fdb().collection('users').doc(f.uid).get();
-      return { ...f, shareSchedule: doc.data()?.shareSchedule||false };
-    } catch { return { ...f, shareSchedule: false }; }
+      const data = doc.data() || {};
+      const scoreData = data.tf_score_v4 || { total: 0 };
+      const streakData = data.tf_streak_v6 || { count: 0 };
+
+      return {
+        ...f,
+        shareSchedule: data.shareSchedule || false,
+        score: scoreData.total || 0,
+        streak: streakData.count || 0
+      };
+    } catch {
+      return { ...f, shareSchedule: false, score: 0, streak: 0 };
+    }
   }));
+
+  // CRITICAL: Update the cache WITH the enriched data so the Leaderboard can see the scores
+  _friendsCache = enriched;
 
   const all = [me, ...enriched].sort((a,b)=>(b.score||0)-(a.score||0));
   list.innerHTML = '';
@@ -619,7 +633,7 @@ function renderRightPanel() {
   const lb = document.getElementById('rp-lb'); lb.innerHTML = '';
   const sc = getScore(), s = getStreak();
   const me = { name:'You', avatar: window.TF_USER?.photoURL||'👤', streak:s.count, score:sc.total||0 };
-  const all = [me, ...(_friendsCache.map(f=>({ name:f.displayName, avatar:f.photoURL||'👤', streak:0, score:0 })))].sort((a,b)=>b.score-a.score);
+  const all = [me, ...(_friendsCache.map(f=>({ name:f.displayName, avatar:f.photoURL||'👤', streak:f.streak||0, score:f.score||0 })))].sort((a,b)=>b.score-a.score);
   all.forEach((f,i) => {
     const rank = i+1;
     const medal = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank+'';
