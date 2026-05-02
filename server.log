@@ -1,0 +1,14 @@
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/auth.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/state.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/blocks.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/categories.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/analytics.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/chat.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/business.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/points.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/currency.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/employees.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/stories.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/May/2026 10:20:23] "GET /js/ui.js HTTP/1.1" 200 -
