@@ -84,9 +84,11 @@ function hasOverlap(y,h,ex=null){
   }return false;
 }
 function findFreeSlot(y,h,ex=null){
-  let sy=snapY(y); if(!hasOverlap(sy,h,ex))return sy;
+  let sy=snapY(y);
+  if (sy + h > 24 * ROW_H) sy = (24 * ROW_H) - h;
+  if(!hasOverlap(sy,h,ex))return sy;
   let d=sy; while(d+h<=24*ROW_H){d+=ROW_H;if(!hasOverlap(d,h,ex))return d;}
-  let u=sy; while(u>0){u-=ROW_H;if(u>=0&&!hasOverlap(u,h,ex))return u;}
+  let u=sy; while(u>=0){if(!hasOverlap(u,h,ex))return u;u-=ROW_H;}
   return sy;
 }
 
@@ -290,7 +292,8 @@ function dragBlock(e,block){
   const onMove=ev=>{
     const gr=grid.getBoundingClientRect();
     block.style.left=Math.max(0,ev.clientX-gr.left-ox)+'px';
-    block.style.top=Math.max(0,ev.clientY-gr.top-oy)+'px';
+    const rawY = Math.max(0,ev.clientY-gr.top-oy);
+    block.style.top=Math.min(rawY, (24 * ROW_H) - origH)+'px';
     const snappedTop=snapY(parseFloat(block.style.top));
     document.querySelectorAll('.grid-row.drop-hl').forEach(r=>r.classList.remove('drop-hl'));
     const rows=document.querySelectorAll('.grid-row'); const row=Math.floor((ev.clientY-gr.top)/ROW_H);
@@ -309,7 +312,11 @@ function dragBlock(e,block){
 }
 function resizeBlockH(e,block){
   e.preventDefault(); const sy=e.clientY, sh=block.offsetHeight;
-  const onMove=ev=>{ block.style.height=Math.max(ROW_H-6,sh+(ev.clientY-sy))+'px'; };
+  const top = parseFloat(block.style.top) || 0;
+  const onMove=ev=>{
+    const newH = Math.max(ROW_H-6,sh+(ev.clientY-sy));
+    block.style.height=Math.min(newH, (24 * ROW_H) - top - 6)+'px';
+  };
   const onUp=()=>{block.style.height=(Math.max(1,Math.round(block.offsetHeight/ROW_H))*ROW_H-6)+'px';saveWS();document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);};
   document.addEventListener('mousemove',onMove); document.addEventListener('mouseup',onUp);
 }
