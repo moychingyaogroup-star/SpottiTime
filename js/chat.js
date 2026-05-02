@@ -420,3 +420,53 @@ function renderRightPanel() {
 }
 function toggleRightPanel() { document.getElementById('right-panel').classList.toggle('hidden'); }
 function toggleCalSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+
+
+// ── Emoji Picker Logic ────────────────────────────────────────────────────────
+const EMOJIS = [String.fromCodePoint(128512),String.fromCodePoint(128515),String.fromCodePoint(128516),String.fromCodePoint(128513),String.fromCodePoint(128518),String.fromCodePoint(128517),String.fromCodePoint(128514),String.fromCodePoint(129315),String.fromCodePoint(129394),String.fromCodePoint(9786,65039),String.fromCodePoint(128522),String.fromCodePoint(128519),String.fromCodePoint(128578),String.fromCodePoint(128579),String.fromCodePoint(128521),String.fromCodePoint(128524),String.fromCodePoint(128525),String.fromCodePoint(129392),String.fromCodePoint(128536),String.fromCodePoint(128535),String.fromCodePoint(128537),String.fromCodePoint(128538),String.fromCodePoint(128523),String.fromCodePoint(128539),String.fromCodePoint(128541),String.fromCodePoint(128540),String.fromCodePoint(129322),String.fromCodePoint(129320),String.fromCodePoint(129488),String.fromCodePoint(129299),String.fromCodePoint(128526),String.fromCodePoint(129400),String.fromCodePoint(129321),String.fromCodePoint(129395),String.fromCodePoint(128527),String.fromCodePoint(128530),String.fromCodePoint(128542),String.fromCodePoint(128532),String.fromCodePoint(128543),String.fromCodePoint(128533),String.fromCodePoint(128577),String.fromCodePoint(9785,65039),String.fromCodePoint(128547),String.fromCodePoint(128534),String.fromCodePoint(128555),String.fromCodePoint(128553),String.fromCodePoint(129402),String.fromCodePoint(128546),String.fromCodePoint(128557),String.fromCodePoint(128548),String.fromCodePoint(128544),String.fromCodePoint(128545),String.fromCodePoint(129324),String.fromCodePoint(129327),String.fromCodePoint(128563),String.fromCodePoint(129397),String.fromCodePoint(129398),String.fromCodePoint(128561),String.fromCodePoint(128552),String.fromCodePoint(128560),String.fromCodePoint(128549),String.fromCodePoint(128531),String.fromCodePoint(129303),String.fromCodePoint(129300),String.fromCodePoint(129325),String.fromCodePoint(129323),String.fromCodePoint(129317),String.fromCodePoint(128566),String.fromCodePoint(128528),String.fromCodePoint(128529),String.fromCodePoint(128556),String.fromCodePoint(128580),String.fromCodePoint(128559),String.fromCodePoint(128550),String.fromCodePoint(128551),String.fromCodePoint(128558),String.fromCodePoint(128562),String.fromCodePoint(129393),String.fromCodePoint(128564),String.fromCodePoint(129316),String.fromCodePoint(128554),String.fromCodePoint(128565),String.fromCodePoint(129296),String.fromCodePoint(129396),String.fromCodePoint(129314),String.fromCodePoint(129326),String.fromCodePoint(129319),String.fromCodePoint(128567),String.fromCodePoint(129298),String.fromCodePoint(129301),String.fromCodePoint(129297),String.fromCodePoint(129312),String.fromCodePoint(128520),String.fromCodePoint(128127),String.fromCodePoint(128121),String.fromCodePoint(128122),String.fromCodePoint(129313),String.fromCodePoint(128169),String.fromCodePoint(128123),String.fromCodePoint(128128),String.fromCodePoint(9760,65039),String.fromCodePoint(128125),String.fromCodePoint(128126),String.fromCodePoint(129302),String.fromCodePoint(127875),String.fromCodePoint(128570),String.fromCodePoint(128568),String.fromCodePoint(128569),String.fromCodePoint(128571),String.fromCodePoint(128572),String.fromCodePoint(128573),String.fromCodePoint(128576),String.fromCodePoint(128575),String.fromCodePoint(128574)];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const inputArea = document.getElementById('chat-input-area');
+  if (!inputArea) return;
+
+  const emojiBtnContainer = document.createElement('div');
+  emojiBtnContainer.id = 'emoji-picker-container';
+
+  const emojiBtn = document.createElement('button');
+  emojiBtn.id = 'chat-emoji-btn';
+  emojiBtn.textContent = String.fromCodePoint(128512);
+  emojiBtn.onclick = (e) => {
+    e.stopPropagation();
+    const picker = document.getElementById('emoji-picker');
+    picker.classList.toggle('open');
+  };
+
+  const emojiPicker = document.createElement('div');
+  emojiPicker.id = 'emoji-picker';
+
+  EMOJIS.forEach(emoji => {
+    const opt = document.createElement('div');
+    opt.className = 'emoji-option';
+    opt.textContent = emoji;
+    opt.onclick = (e) => {
+      e.stopPropagation();
+      const input = document.getElementById('chat-input');
+      input.value += emoji;
+      input.focus();
+    };
+    emojiPicker.appendChild(opt);
+  });
+
+  emojiBtnContainer.appendChild(emojiBtn);
+  emojiBtnContainer.appendChild(emojiPicker);
+
+  // Insert before the send button
+  const sendBtn = document.getElementById('chat-send');
+  inputArea.insertBefore(emojiBtnContainer, sendBtn);
+
+  document.addEventListener('click', (e) => {
+    if (!emojiBtnContainer.contains(e.target)) {
+      emojiPicker.classList.remove('open');
+    }
+  });
+});
