@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isUser(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    // User profiles are readable by signed-in users so friend-tag search works.
+    match /users/{userId} {
+      allow read: if signedIn();
+      allow create: if isUser(userId);
+      allow update, delete: if isUser(userId);
+
+      // Accepted friends. Either side can create/delete the pair during accept/remove.
+      match /friends/{friendId} {
+        allow read: if isUser(userId);
+        allow create, update, delete: if signedIn() && (request.auth.uid == userId || request.auth.uid == friendId);
+      }
+
+      // Incoming friend requests for this user.
+      // Sender can create a request in receiver's inbox; receiver can read/accept/reject it.
+      match /friend_requests/{requesterId} {
+        allow read: if isUser(userId);
+        allow create, update: if signedIn()
+          && request.auth.uid == requesterId
+          && request.resource.data.uid == requesterId;
+        allow delete: if signedIn() && (request.auth.uid == userId || request.auth.uid == requesterId);
+      }
+
+      // Sender's own outgoing request list.
+      // Sender can create/read/cancel; receiver can delete it after accept/reject.
+      match /sent_friend_requests/{targetId} {
+        allow read: if isUser(userId);
+        allow create, update: if isUser(userId)
+          && request.resource.data.uid == targetId;
+        allow delete: if signedIn() && (request.auth.uid == userId || request.auth.uid == targetId);
+      }
+    }
+
+    // Schedule sharing: signed-in users can read shared schedules; owner can write their schedule.
+    match /schedules/{userId}/days/{dayId} {
+      allow read: if signedIn();
+      allow write: if isUser(userId);
+    }
+
+    // Stories: signed-in friends can read stories in the app; only owner can create/update/delete their own stories.
+    match /stories/{storyId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Chat messages: allow signed-in users to read/write. The app only opens chats with accepted friends.
+    match /chats/{chatId}/messages/{messageId} {
+      allow read, create: if signedIn();
+      allow update, delete: if false;
+    }
+  }
+}
