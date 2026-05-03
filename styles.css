@@ -1400,10 +1400,7 @@ a{color:inherit;text-decoration:none}
 .story-edit-img-zone:hover {
   background: rgba(255,255,255,0.1);
 }
-.placeholder-icon {
-  font-size: 40px;
-  opacity: 0.5;
-}
+
 
 .story-edit-text-zone {
   position: absolute;
@@ -1421,10 +1418,10 @@ a{color:inherit;text-decoration:none}
 }
 
 /* Specific Templates CSS */
-.story-tpl-polaroid { background: #f0f0f0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; padding-top: 40px; position: relative; }
+
 .polaroid-tape { position:absolute; top: 10px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 100px; height: 25px; background: rgba(255,255,255,0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 3; }
-.story-tpl-polaroid .story-edit-img-zone { position:relative; width: 300px; height: 300px; background:#000; box-shadow: inset 0 0 10px #000; }
-.story-tpl-polaroid .story-edit-text-zone { position:relative; width:300px; margin-top:20px; color:#333; font-family: 'Marker Felt', 'Comic Sans MS', cursive; font-size: 24px; text-align:center; }
+
+
 
 .story-tpl-win95 { background: #008080; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
 .win95-content { background:#c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; padding: 2px; width: 300px; display:flex; flex-direction:column; }
@@ -1743,3 +1740,67 @@ a{color:inherit;text-decoration:none}
 .story-linked-schedule-badge strong{display:block;font-size:12px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .story-linked-schedule-badge small{display:block;font-size:10px;opacity:.82;margin-top:2px;}
 .story-viewer-content,.story-feed-preview{position:relative;}
+
+/* STORY PACK THEMES */
+.story-tpl-minimalist {
+  width: 100%; height: 100%; background-size: cover; background-position: center;
+  position: relative; background-color: #fafafa; color: #111; font-family: 'Inter', sans-serif;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box;
+}
+.story-tpl-minimalist .story-edit-img-zone {
+  width: 100%; height: 50%; background-size: cover; background-position: center; border-radius: 12px;
+  background-color: #ececec; margin-bottom: 20px;
+}
+.story-tpl-minimalist .story-edit-text-zone {
+  font-size: 24px; font-weight: 300; text-align: center; line-height: 1.4; width: 100%;
+}
+
+.story-tpl-neon {
+  width: 100%; height: 100%; background-size: cover; background-position: center;
+  position: relative; background-color: #050505; color: #fff; font-family: 'Courier New', monospace;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
+}
+.story-tpl-neon .story-edit-img-zone {
+  width: 100%; height: 50%; background-size: cover; background-position: center; border: 2px solid cyan;
+  box-shadow: 0 0 15px cyan; background-color: #111; margin-bottom: 20px; border-radius: 8px;
+}
+.story-tpl-neon .story-edit-text-zone {
+  font-size: 28px; font-weight: bold; text-align: center; text-transform: uppercase; width: 100%;
+}
+
+.story-tpl-polaroid {
+  width: 100%; height: 100%; background-size: cover; background-position: center;
+  position: relative; background-color: #ddd; display: flex; flex-direction: column; align-items: center; padding-top: 50px;
+}
+.story-tpl-polaroid .polaroid-tape {
+  position: absolute; top: 20px; width: 100px; height: 30px; background: rgba(255,255,255,0.4);
+  transform: rotate(-3deg); z-index: 10; backdrop-filter: blur(2px); box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.story-tpl-polaroid .story-edit-img-zone {
+  width: 80%; aspect-ratio: 1; background-color: #111; background-size: cover; background-position: center;
+  border: 15px solid white; border-bottom-width: 60px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); position: relative;
+}
+.story-tpl-polaroid .story-edit-text-zone {
+  position: absolute; bottom: 15%; width: 80%; text-align: center; color: #333;
+  font-family: 'Marker Felt', 'Comic Sans MS', cursive; font-size: 24px; z-index: 10;
+}
+
+
+/* Glassmorphism for workspace */
+.grid-row {
+    background-color: rgba(20, 20, 20, 0.7) !important;
+    backdrop-filter: blur(10px);
+}
+.block {
+    backdrop-filter: blur(10px);
+}
+.block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 20, 20, 0.7);
+    pointer-events: none;
+    z-index: -1;
+    border-radius: inherit;
+}

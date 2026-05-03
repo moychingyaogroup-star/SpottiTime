@@ -43,9 +43,16 @@ function renderAnalytics(){
   // FIX: categories now accumulate correctly because durationH is non-zero.
   const catMap={};
   blocks.forEach(b=>{
-    const k=b.catId||'__none';
-    if(!catMap[k])catMap[k]={catId:k,hours:0,cat:CAT_MAP[b.catId]};
-    catMap[k].hours+=b.durationH;
+    if (b.catId && b.catId.length) {
+      const splitDur = b.durationH / b.catId.length;
+      b.catId.forEach(id => {
+        if(!catMap[id]) catMap[id] = {catId: id, hours: 0, cat: CAT_MAP[id]};
+        catMap[id].hours += splitDur;
+      });
+    } else {
+      if(!catMap['__none']) catMap['__none'] = {catId: '__none', hours: 0, cat: null};
+      catMap['__none'].hours += b.durationH;
+    }
   });
   if(freeH>0)catMap['__free']={catId:'__free',hours:freeH,cat:{name:'Free',color:'#374151',emoji:'🕐'}};
   const slices=Object.values(catMap).sort((a,b)=>b.hours-a.hours);

@@ -93,9 +93,136 @@ function switchView(view){
   if(view==='employees')renderEmployees();
   if(view==='profile')renderProfile();
   if(view==='stories')renderStoryView();
+  if(view==='news') {
+      if(typeof renderNews === 'function') renderNews();
+  }
   beep('click');
 }
 
+
+
+// ── TIMER LOGIC ─────────────────────────────────────────────────────────────
+let timerInterval = null;
+let timerSeconds = 25 * 60; // 25 min default
+let timerMode = 'pomodoro'; // 'pomodoro' | 'stopwatch' | 'break'
+let timerRunning = false;
+let timerEndTime = null;
+let timerStartTime = null;
+
+function formatTimer(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2, '0');
+  const s = (sec % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function updateTimerUI() {
+  const disp = document.getElementById('timer-display');
+  if(disp) disp.textContent = formatTimer(timerSeconds);
+  const btn = document.getElementById('timer-start-btn');
+  if(btn) btn.textContent = timerRunning ? 'Pause' : 'Start';
+}
+
+function toggleTimerMode() {
+  const sel = document.getElementById('timer-mode-sel');
+  timerMode = sel ? sel.value : 'pomodoro';
+  if(timerRunning) toggleTimer(); // Stop it on switch
+  timerSeconds = timerMode === 'pomodoro' ? 25 * 60 : (timerMode === 'break' ? 5 * 60 : 0);
+  updateTimerUI();
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+  } else {
+    timerRunning = true;
+    const now = Date.now();
+    if (timerMode === 'pomodoro' || timerMode === 'break') {
+        timerEndTime = now + (timerSeconds * 1000);
+    } else {
+        timerStartTime = now - (timerSeconds * 1000);
+    }
+
+    timerInterval = setInterval(() => {
+      const current = Date.now();
+      if (timerMode === 'pomodoro' || timerMode === 'break') {
+        timerSeconds = Math.max(0, Math.ceil((timerEndTime - current) / 1000));
+        if (timerSeconds <= 0) {
+          timerComplete();
+        }
+      } else {
+        timerSeconds = Math.floor((current - timerStartTime) / 1000);
+      }
+      updateTimerUI();
+    }, 500);
+  }
+  updateTimerUI();
+}
+
+function updateTimerBlockOptions() {
+  const linkSel = document.getElementById('timer-block-link');
+  if(!linkSel) return;
+  const currentVal = linkSel.value;
+  linkSel.innerHTML = '<option value="">No Block Link</option>';
+
+  document.querySelectorAll('#grid-area .block').forEach(b => {
+     if(b.dataset.done !== '1') {
+       const text = b.querySelector('.block-text')?.textContent?.substring(0, 15) || 'Block';
+       const opt = document.createElement('option');
+       opt.value = b.dataset.bid;
+       opt.textContent = text;
+       linkSel.appendChild(opt);
+     }
+  });
+  if(currentVal) linkSel.value = currentVal;
+}
+
+function timerComplete() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+
+  if (typeof beep === 'function') beep('complete');
+
+  if (timerMode === 'pomodoro') {
+      if (typeof awardPoints === 'function') awardPoints(50, null, null);
+
+      const linkSel = document.getElementById('timer-block-link');
+      if(linkSel && linkSel.value) {
+         const bId = linkSel.value;
+         const target = document.querySelector(`.block[data-bid="${bId}"]`);
+         if(target && typeof toggleBlockDone === 'function') {
+             const chk = target.querySelector('.block-check');
+             if(chk && target.dataset.done !== '1') {
+                 toggleBlockDone(target, chk);
+             }
+         }
+         linkSel.value = ""; // clear link after completion
+      }
+      if(typeof showToast === 'function') showToast('Pomodoro Complete! Time for a 5 min break. 🎉');
+
+      // Auto switch to break mode
+      timerMode = 'break';
+      const sel = document.getElementById('timer-mode-sel');
+      // Create option if it doesn't exist
+      if(sel && !sel.querySelector('option[value="break"]')) {
+          const opt = document.createElement('option');
+          opt.value = 'break';
+          opt.textContent = 'Break (5m)';
+          sel.appendChild(opt);
+      }
+      if(sel) sel.value = 'break';
+      timerSeconds = 5 * 60;
+  } else if (timerMode === 'break') {
+      if(typeof showToast === 'function') showToast('Break Over! Back to work.');
+      timerMode = 'pomodoro';
+      const sel = document.getElementById('timer-mode-sel');
+      if(sel) sel.value = 'pomodoro';
+      timerSeconds = 25 * 60;
+  }
+  updateTimerUI();
+}
+
+document.addEventListener('mouseup', () => setTimeout(updateTimerBlockOptions, 100));
 
 function init(){
   const cc=getCharState(); if(!cc.unlocked.includes('neko')){cc.unlocked.push('neko'); ss('CHARS',cc);} 
