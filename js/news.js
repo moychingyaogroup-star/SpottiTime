@@ -19,7 +19,7 @@ async function fetchNews() {
   try {
     // using rss2json public endpoint as free unauthenticated api
     const urlGlobal = 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss';
-    const urlMalaysia = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.thestar.com.my/rss/news/nation';
+    const urlMalaysia = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.malaymail.com/feed/rss/malaysia';
 
     const [resGlobal, resMalaysia] = await Promise.all([
         fetch(urlGlobal),
@@ -39,7 +39,7 @@ async function fetchNews() {
     }));
 
     const myItems = (dataMalaysia.items || []).slice(0, 5).map(item => ({
-      source: "The Star MY",
+      source: "Malay Mail MY",
       headline: item.title,
       summary: item.description || item.content || "Read more...",
       url: item.link

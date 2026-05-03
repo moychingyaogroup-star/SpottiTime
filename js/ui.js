@@ -253,3 +253,85 @@ function editUsername() {
     renderProfile();
   }
 }
+
+// BACKGROUND CUSTOMIZATION
+function showBgModal() {
+  const body = `
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px;">
+      <button onclick="setBg('default')" class="modal-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border);">Mountain Night (Default)</button>
+      <button onclick="setBg('dark')" class="modal-btn" style="background:#111;color:#fff;border:1px solid var(--border);">Simple Dark</button>
+      <button onclick="setBg('bright')" class="modal-btn" style="background:#f5f5f5;color:#111;border:1px solid var(--border);">Simple Bright</button>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">Upload Custom Photo:</div>
+      <input type="file" id="bg-upload-input" accept="image/*" style="font-size:12px; color:var(--text);" onchange="handleBgUpload(event)">
+    </div>
+  `;
+  showModal({title:'Customize Background', body, btn:'Close', onConfirm:()=>true});
+}
+
+function setBg(type, url) {
+  const viewHome = document.getElementById('view-home');
+  if (!viewHome) return;
+  if(type === 'default') {
+    viewHome.style.backgroundImage = "url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3')";
+    viewHome.style.backgroundColor = "";
+    localStorage.setItem('tf_bg', 'default');
+  } else if (type === 'dark') {
+    viewHome.style.backgroundImage = "none";
+    viewHome.style.backgroundColor = "#111";
+    localStorage.setItem('tf_bg', 'dark');
+  } else if (type === 'bright') {
+    viewHome.style.backgroundImage = "none";
+    viewHome.style.backgroundColor = "#f5f5f5";
+    localStorage.setItem('tf_bg', 'bright');
+  } else if (type === 'custom') {
+    viewHome.style.backgroundImage = `url('${url}')`;
+    viewHome.style.backgroundColor = "";
+    localStorage.setItem('tf_bg', url);
+  }
+}
+
+function handleBgUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Create a canvas to resize/compress the image
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      const MAX_SIZE = 1920;
+      if (width > height && width > MAX_SIZE) {
+        height *= MAX_SIZE / width;
+        width = MAX_SIZE;
+      } else if (height > MAX_SIZE) {
+        width *= MAX_SIZE / height;
+        height = MAX_SIZE;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      setBg('custom', dataUrl);
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedBg = localStorage.getItem('tf_bg');
+  if (savedBg) {
+    if (savedBg === 'default' || savedBg === 'dark' || savedBg === 'bright') {
+      setBg(savedBg);
+    } else {
+      setBg('custom', savedBg);
+    }
+  }
+});
