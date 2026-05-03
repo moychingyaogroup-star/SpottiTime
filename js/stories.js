@@ -1,284 +1,40 @@
-const STORY_TEMPLATES = [
-  // 1. Retro Polaroid
+const STORY_THEMES = [
   {
-    id: "tpl_polaroid",
-    html: `
-      <div class="story-tpl-polaroid">
-        <div class="polaroid-tape"></div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">📸</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Add a caption..."></div>
-      </div>
-    `
+    id: "theme_minimalist",
+    name: "Minimalist",
+    templates: [
+      { id: "tpl_min_1", html: `<div class="story-tpl-minimalist t1"><div class="story-edit-text-zone">TITLE</div></div>` },
+      { id: "tpl_min_2", html: `<div class="story-tpl-minimalist t2"><div class="story-edit-text-zone">"Quote"</div></div>` },
+      { id: "tpl_min_3", html: `<div class="story-tpl-minimalist t3"><div class="story-schedule-link-wrap"></div></div>` },
+      { id: "tpl_min_4", html: `<div class="story-tpl-minimalist t4"><div class="story-edit-img-zone"></div><div class="story-edit-text-zone">Minimal text</div></div>` },
+      { id: "tpl_min_5", html: `<div class="story-tpl-minimalist t5"><div class="story-edit-text-zone">- Item 1<br>- Item 2</div></div>` }
+    ]
   },
-  // 2. Win95 Error Popup
   {
-    id: "tpl_win95",
-    html: `
-      <div class="story-tpl-win95">
-        <div class="win95-header">
-          <span>Error</span>
-          <div class="win95-btn">X</div>
-        </div>
-        <div class="win95-content">
-          <div class="story-edit-img-zone">
-            <div class="placeholder-icon">⚠️</div>
-          </div>
-          <div class="story-edit-text-zone" contenteditable="true" data-placeholder="A fatal exception 0E has occurred..."></div>
-          <div class="win95-ok-btn">OK</div>
-        </div>
-      </div>
-    `
+    id: "theme_neon",
+    name: "Neon",
+    templates: [
+      { id: "tpl_neon_1", html: `<div class="story-tpl-neon t1"><div class="story-edit-text-zone">TITLE</div></div>` },
+      { id: "tpl_neon_2", html: `<div class="story-tpl-neon t2"><div class="story-edit-text-zone">"Quote"</div></div>` },
+      { id: "tpl_neon_3", html: `<div class="story-tpl-neon t3"><div class="story-schedule-link-wrap"></div></div>` },
+      { id: "tpl_neon_4", html: `<div class="story-tpl-neon t4"><div class="story-edit-img-zone"></div><div class="story-edit-text-zone">Minimal text</div></div>` },
+      { id: "tpl_neon_5", html: `<div class="story-tpl-neon t5"><div class="story-edit-text-zone">- Item 1<br>- Item 2</div></div>` }
+    ]
   },
-  // 3. Torn Scrapbook Paper
   {
-    id: "tpl_scrapbook",
-    html: `
-      <div class="story-tpl-scrapbook">
-        <div class="scrapbook-paper">
-          <div class="story-edit-img-zone">
-            <div class="placeholder-icon">✂️</div>
-          </div>
-          <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Dear Diary..."></div>
-        </div>
-        <div class="scrapbook-tape"></div>
-        <div class="scrapbook-tape t2"></div>
-      </div>
-    `
-  },
-  // 4. Y2K Sparkles
-  {
-    id: "tpl_y2k",
-    html: `
-      <div class="story-tpl-y2k">
-        <div class="sparkle s1">✨</div>
-        <div class="sparkle s2">💖</div>
-        <div class="sparkle s3">✨</div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🦋</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="that's hot... "></div>
-      </div>
-    `
-  },
-  // 5. 8-Bit Retro
-  {
-    id: "tpl_8bit",
-    html: `
-      <div class="story-tpl-8bit">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">👾</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="INSERT COIN..."></div>
-        <div class="pixel-hearts">❤️❤️❤️</div>
-      </div>
-    `
-  },
-  // 6. Vaporwave
-  {
-    id: "tpl_vaporwave",
-    html: `
-      <div class="story-tpl-vaporwave">
-        <div class="vaporwave-grid"></div>
-        <div class="vaporwave-sun"></div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🌴</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="a e s t h e t i c"></div>
-      </div>
-    `
-  },
-  // 7. Fake iOS Notification
-  {
-    id: "tpl_ios_notif",
-    html: `
-      <div class="story-tpl-ios-notif">
-        <div class="story-edit-img-zone bg-img">
-          <div class="placeholder-icon">📱</div>
-        </div>
-        <div class="ios-notif-bubble">
-          <div class="ios-notif-header">
-            <span class="app-icon">💬</span>
-            <span class="app-name">MESSAGES</span>
-            <span class="time">now</span>
-          </div>
-          <div class="story-edit-text-zone" contenteditable="true" data-placeholder="New message..."></div>
-        </div>
-      </div>
-    `
-  },
-  // 8. VHS Glitch
-  {
-    id: "tpl_vhs",
-    html: `
-      <div class="story-tpl-vhs">
-        <div class="vhs-overlay"></div>
-        <div class="vhs-text-top">PLAY ►</div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">📼</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="12:00 AM"></div>
-      </div>
-    `
-  },
-  // 9. Film Strip
-  {
-    id: "tpl_filmstrip",
-    html: `
-      <div class="story-tpl-filmstrip">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🎞️</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Take 1..."></div>
-      </div>
-    `
-  },
-  // 10. Neon Sign
-  {
-    id: "tpl_neon",
-    html: `
-      <div class="story-tpl-neon">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🌃</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Open 24/7"></div>
-      </div>
-    `
-  },
-  // 11. Minimalist Magazine
-  {
-    id: "tpl_magazine",
-    html: `
-      <div class="story-tpl-magazine">
-        <div class="mag-header">VOGUE</div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">📰</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Cover Story..."></div>
-      </div>
-    `
-  },
-  // 12. Receipt
-  {
-    id: "tpl_receipt",
-    html: `
-      <div class="story-tpl-receipt">
-        <div class="receipt-header">THANK YOU</div>
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🧾</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Total: Priceless"></div>
-        <div class="receipt-barcode">||| || ||| | ||</div>
-      </div>
-    `
-  },
-  // 13. Music Player
-  {
-    id: "tpl_music",
-    html: `
-      <div class="story-tpl-music">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🎵</div>
-        </div>
-        <div class="music-controls">
-          <span>⏮</span> <span>▶️</span> <span>⏭</span>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Now playing..."></div>
-      </div>
-    `
-  },
-  // 14. Dreamy Cloud
-  {
-    id: "tpl_cloud",
-    html: `
-      <div class="story-tpl-cloud">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">☁️</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Head in the clouds..."></div>
-      </div>
-    `
-  },
-  // 15. Ransom Note
-  {
-    id: "tpl_ransom",
-    html: `
-      <div class="story-tpl-ransom">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">✂️</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="WE HAVE THE... "></div>
-      </div>
-    `
-  },
-  // 16. Cyberpunk
-  {
-    id: "tpl_cyberpunk",
-    html: `
-      <div class="story-tpl-cyberpunk">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🦾</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Night City..."></div>
-      </div>
-    `
-  },
-  // 17. Pastel Grid
-  {
-    id: "tpl_pastel",
-    html: `
-      <div class="story-tpl-pastel">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">🌸</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Soft vibes..."></div>
-      </div>
-    `
-  },
-  // 18. Holographic
-  {
-    id: "tpl_holo",
-    html: `
-      <div class="story-tpl-holo">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">💿</div>
-        </div>
-        <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Shiny..."></div>
-      </div>
-    `
-  },
-  // 19. Comic Book
-  {
-    id: "tpl_comic",
-    html: `
-      <div class="story-tpl-comic">
-        <div class="story-edit-img-zone">
-          <div class="placeholder-icon">💥</div>
-        </div>
-        <div class="comic-bubble">
-          <div class="story-edit-text-zone" contenteditable="true" data-placeholder="POW!"></div>
-        </div>
-      </div>
-    `
-  },
-  // 20. Gothic Frame
-  {
-    id: "tpl_gothic",
-    html: `
-      <div class="story-tpl-gothic">
-        <div class="gothic-border">
-          <div class="story-edit-img-zone">
-            <div class="placeholder-icon">🦇</div>
-          </div>
-          <div class="story-edit-text-zone" contenteditable="true" data-placeholder="Darkness..."></div>
-        </div>
-      </div>
-    `
+    id: "theme_polaroid",
+    name: "Polaroid",
+    templates: [
+      { id: "tpl_pol_1", html: `<div class="story-tpl-polaroid t1"><div class="polaroid-tape"></div><div class="story-edit-img-zone"></div><div class="story-edit-text-zone">Title</div></div>` },
+      { id: "tpl_pol_2", html: `<div class="story-tpl-polaroid t2"><div class="polaroid-tape"></div><div class="story-edit-img-zone"></div><div class="story-edit-text-zone">"Quote"</div></div>` },
+      { id: "tpl_pol_3", html: `<div class="story-tpl-polaroid t3"><div class="story-schedule-link-wrap"></div></div>` },
+      { id: "tpl_pol_4", html: `<div class="story-tpl-polaroid t4"><div class="polaroid-tape"></div><div class="story-edit-img-zone"></div></div>` },
+      { id: "tpl_pol_5", html: `<div class="story-tpl-polaroid t5"><div class="polaroid-tape"></div><div class="story-edit-text-zone">- Item 1<br>- Item 2</div></div>` }
+    ]
   }
 ];
-
-let currentStoryTemplate = null;
+// For backward compatibility / global var needs:
+// let currentStoryTemplate = null removed
 
 function plainStoryText(html) {
   const div = document.createElement('div');
@@ -339,21 +95,50 @@ function renderStoryView() {
   }
   
   const gallery = document.getElementById('story-gallery');
-  gallery.innerHTML = '';
-  
-  STORY_TEMPLATES.forEach((tpl, index) => {
-    const card = document.createElement('div');
-    card.className = 'story-gallery-card';
-    card.innerHTML = `<div class="story-gallery-preview">${tpl.html}</div>`;
-    card.onclick = () => openStoryPreview(index);
-    gallery.appendChild(card);
+
+  // Theme selector
+  let themeNav = document.getElementById('story-theme-nav');
+  if (!themeNav) {
+    themeNav = document.createElement('div');
+    themeNav.id = 'story-theme-nav';
+    themeNav.style.cssText = 'display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; margin-bottom:10px;';
+    galleryWrap.insertBefore(themeNav, gallery);
+  }
+  themeNav.innerHTML = '';
+
+  STORY_THEMES.forEach((theme, tIdx) => {
+    const btn = document.createElement('button');
+    btn.className = 'tf-button';
+    btn.textContent = theme.name;
+    btn.onclick = () => renderThemeGallery(tIdx);
+    themeNav.appendChild(btn);
   });
-  
+
+  // By default render the first theme
+  renderThemeGallery(0);
+
   renderStoryFeed();
 }
 
-function openStoryPreview(templateIndex) {
-  currentStoryTemplate = STORY_TEMPLATES[templateIndex];
+function renderThemeGallery(themeIndex) {
+  const gallery = document.getElementById('story-gallery');
+  gallery.innerHTML = '';
+  const theme = STORY_THEMES[themeIndex];
+  if(!theme) return;
+  
+  theme.templates.forEach((tpl, tplIndex) => {
+    const card = document.createElement('div');
+    card.className = 'story-gallery-card';
+    card.innerHTML = `<div class="story-gallery-preview">${tpl.html}</div>`;
+    // pass an object identifying theme and template index
+    card.onclick = () => openStoryPreview({tIdx: themeIndex, pIdx: tplIndex});
+    gallery.appendChild(card);
+  });
+
+}
+
+function openStoryPreview(templateLoc) {
+  currentStoryTemplate = STORY_THEMES[templateLoc.tIdx].templates[templateLoc.pIdx];
   
   const overlay = document.createElement('div');
   overlay.id = 'story-preview-overlay';
@@ -586,7 +371,12 @@ function groupStoriesByAuthor(stories, currentUid) {
 }
 
 function fillStoryTemplate(root, story) {
-  const tpl = STORY_TEMPLATES.find(t => t.id === story.templateId) || STORY_TEMPLATES[0];
+  let tpl = null;
+  for(const theme of STORY_THEMES) {
+    tpl = theme.templates.find(t => t.id === story.templateId);
+    if(tpl) break;
+  }
+  if(!tpl) tpl = STORY_THEMES[0].templates[0];
   root.innerHTML = tpl.html;
 
   const imgZone = root.querySelector('.story-edit-img-zone');

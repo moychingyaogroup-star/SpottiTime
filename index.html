@@ -75,6 +75,7 @@
       <div class="sb-nav-section-label">Work</div>
       <button class="nav-item"        data-view="business"        onclick="switchView('business')">       <span class="ni">🏢</span>Business</button>
       <button class="nav-item"        data-view="employees"       onclick="switchView('employees')">      <span class="ni">💼</span>Employees</button>
+      <button class="nav-item"        data-view="news"            onclick="switchView('news')">           <span class="ni">📰</span>News</button>
     </div>
   </div>
   <div class="sb-streak" id="sb-streak-widget">
@@ -101,17 +102,30 @@
   <div id="topbar">
     <button class="topbar-hamburger" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">☰</button>
     <div><div class="topbar-title" id="topbar-title">Schedule</div></div>
-    <div class="topbar-date-nav" id="date-nav">
+    <div class="topbar-date-nav" id="date-nav" style="margin-left: 10px;">
       <button class="dnav-arrow" onclick="changeDate(-1)">←</button>
       <button class="today-btn" onclick="goToday()">Today</button>
       <span id="dnav-label">Today</span>
       <button class="dnav-arrow" onclick="changeDate(1)">→</button>
     </div>
+
+    <!-- TIMER WIDGET -->
+    <div id="topbar-timer" style="display:flex; align-items:center; gap:8px; margin-left:auto; background:var(--card-bg); padding:4px 10px; border-radius:8px; border:1px solid var(--border);">
+      <select id="timer-mode-sel" onchange="toggleTimerMode()" style="background:transparent; border:none; color:var(--text); font-size:12px; font-weight:600; outline:none; cursor:pointer;">
+        <option value="pomodoro">Pomodoro (25m)</option>
+        <option value="stopwatch">Stopwatch</option>
+      </select>
+      <div id="timer-display" style="font-family:'DM Mono', monospace; font-size:14px; font-weight:700; color:var(--accent);">25:00</div>
+      <button id="timer-start-btn" onclick="toggleTimer()" style="background:var(--accent); color:#fff; border:none; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;">Start</button>
+      <select id="timer-block-link" style="background:transparent; border:1px solid var(--border); color:var(--text); font-size:11px; outline:none; max-width:80px;">
+        <option value="">No Block Link</option>
+      </select>
+    </div>
     <button id="topbar-notif-btn" onclick="toggleNotif(event)">🔔<span id="topbar-notif-count" style="display:none"></span></button>
   </div>
 
   <!-- HOME VIEW -->
-  <div class="view active" id="view-home">
+  <div class="view active" id="view-home" style="background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3'); background-size: cover; background-position: center;">
     <div id="schedule-wrap">
       <div id="preset-bar">
         <span class="preset-bar-label">📌 Presets</span>
@@ -223,6 +237,15 @@
   <!-- PROFILE -->
   <div class="view" id="view-profile">
     <div class="view-scroll"><div class="view-inner" id="profile-inner"></div></div>
+  </div>
+
+  <!-- NEWS FEED -->
+  <div class="view" id="view-news">
+    <div class="view-scroll"><div class="view-inner">
+      <div class="view-title">News Feed</div>
+      <div class="view-sub">Bi-Daily Malaysian & Global Updates</div>
+      <div id="news-feed-list" style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;"></div>
+    </div></div>
   </div>
 
   <!-- EMPLOYEES FINANCES -->
@@ -379,6 +402,7 @@
 <script src="./js/currency.js"></script>
 <script src="./js/employees.js"></script>
 <script src="./js/stories.js"></script>
+<script src="./js/news.js"></script>
 <script src="./js/ui.js"></script>
 </body>
 </html>

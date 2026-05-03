@@ -31,7 +31,7 @@ function _sanitizeBlockHtml(html){
 // ════════════════════════════════════════════════════════════════════
 function getBlocks(){
   return Array.from(document.querySelectorAll('#grid-area .block')).map(b=>({
-    hex:b.dataset.hex, catId:b.dataset.cat||'',
+    hex:b.dataset.hex, catId: b.dataset.cat ? b.dataset.cat.split(',') : [],
     // FIX: save innerHTML to preserve <br> line breaks
     text:(b.querySelector('.block-text')||{}).innerHTML||'',
     startH:(parseFloat(b.style.top)||0)/ROW_H,
@@ -47,7 +47,7 @@ function getBlocks(){
 function saveWS(){
   const blocks=Array.from(document.querySelectorAll('#grid-area .block')).map(b=>({
     id:b.dataset.bid, hex:b.dataset.hex, fg:b.dataset.fg,
-    catId:b.dataset.cat||'', name:b.dataset.name||'',
+    catId: b.dataset.cat ? b.dataset.cat.split(',') : [], name:b.dataset.name||'',
     // FIX: innerHTML not textContent — preserves <br> line breaks
     text:(b.querySelector('.block-text')||{}).innerHTML||'',
     left:parseFloat(b.style.left)||0, top:parseFloat(b.style.top)||0,
@@ -70,7 +70,7 @@ function loadWS(ds){
     const blocks=JSON.parse(localStorage.getItem(wsKey(ds)))||[];
     blocks.forEach(b=>{
       const col=BLOCK_COLORS.find(c=>c.hex===b.hex)||{hex:b.hex||'#38BDF8',fg:b.fg||'#0C1A2E',name:b.name||''};
-      createBlock(b.left,b.top,b.text,col,b.catId||'',b.width,b.height,b.id,b.done,b.media||[],b.emoji||'',b.fontSize||'12');
+      createBlock(b.left,b.top,b.text,col,Array.isArray(b.catId)?b.catId:(b.catId?[b.catId]:[]),b.width,b.height,b.id,b.done,b.media||[],b.emoji||'',b.fontSize||'12');
     });
   }catch(e){}
   updateCatSidePanel();
@@ -159,30 +159,53 @@ function _addMediaToBlock(block,src,type='img'){
 // createBlock — master function
 // ════════════════════════════════════════════════════════════════════
 function createBlock(x,y,text,color,catId,w,h,id,done,media,emoji,fontSize){
+  const catArr = Array.isArray(catId) ? catId : (catId ? [catId] : []);
   const c=color||BLOCK_COLORS[0];
   const bH=h||(ROW_H-6); const bW=w||210;
   const freeY=hasOverlap(y,bH)?findFreeSlot(y,bH):y;
   _bid++; const bid=id||`b${_bid}`;
-  const cat=CAT_MAP[catId]||null;
+  const cats = catArr.map(id => CAT_MAP[id]).filter(Boolean);
   const mediaArr=media||[]; const emojiVal=emoji||''; const fs=fontSize||'12';
 
   const block=document.createElement('div');
   block.className='block'+(done?' completed':'');
   block.dataset.bid=bid; block.dataset.hex=c.hex; block.dataset.fg=c.fg;
-  block.dataset.name=c.name||''; block.dataset.cat=catId||'';
+  block.dataset.name=c.name||''; block.dataset.cat=catArr.join(',');
   block.dataset.done=done?'1':'0';
   block.dataset.media=JSON.stringify(mediaArr);
   block.dataset.emoji=emojiVal;
   block.dataset.fontSize=fs;
-  block.style.cssText=`left:${x}px;top:${freeY}px;width:${bW}px;height:${bH}px;background:${c.hex};color:${c.fg}`;
+  block.style.cssText=`left:${x}px;top:${freeY}px;width:${bW}px;height:${bH}px;color:${c.fg}`;
+  if (cats.length === 2) {
+    block.style.background = `linear-gradient(135deg, ${cats[0].color} 0%, ${cats[1].color} 100%)`;
+  } else {
+    block.style.background = c.hex;
+  }
 
   // Header
   const hdr=document.createElement('div'); hdr.className='block-header';
-  const dot=document.createElement('div'); dot.className='block-cat-dot'; dot.style.background=cat?cat.color:'rgba(255,255,255,.3)';
-  const catLbl=document.createElement('div'); catLbl.className='block-cat-label'; catLbl.textContent=cat?cat.name:'';
+
+  const dotsWrap = document.createElement('div');
+  dotsWrap.style.display = 'flex';
+
+  if (cats.length > 0) {
+    cats.forEach((cat, idx) => {
+      const dot=document.createElement('div'); dot.className='block-cat-dot';
+      dot.style.background = cat.color;
+      if (idx > 0) dot.style.marginLeft = '-4px';
+      dot.style.border = cats.length > 1 ? '1px solid rgba(0,0,0,0.2)' : 'none';
+      dotsWrap.appendChild(dot);
+    });
+  } else {
+    const dot=document.createElement('div'); dot.className='block-cat-dot'; dot.style.background='rgba(255,255,255,.3)';
+    dotsWrap.appendChild(dot);
+  }
+
+  const catLbl=document.createElement('div'); catLbl.className='block-cat-label';
+  catLbl.textContent = cats.length > 0 ? cats.map(c=>c.name).join(' & ') : '';
   const chk=document.createElement('div'); chk.className='block-check'+(done?' done':''); chk.textContent=done?'✓':''; chk.title='Mark complete (+pts)';
   chk.addEventListener('click',e=>{e.stopPropagation();toggleBlockDone(block,chk);});
-  hdr.appendChild(dot); hdr.appendChild(catLbl); hdr.appendChild(chk);
+  hdr.appendChild(dotsWrap); hdr.appendChild(catLbl); hdr.appendChild(chk);
 
   // Emoji overlay
   if(emojiVal){
@@ -268,10 +291,38 @@ function applyBlockColor(block,c){
   if(txt)txt.style.color=c.fg; if(btn)btn.style.color=c.fg;
 }
 function applyBlockCat(block,catId){
-  block.dataset.cat=catId; const cat=CAT_MAP[catId];
-  const dot=block.querySelector('.block-cat-dot'); const lbl=block.querySelector('.block-cat-label');
-  if(dot)dot.style.background=cat?cat.color:'rgba(255,255,255,.3)';
-  if(lbl)lbl.textContent=cat?cat.name:'';
+  let currentCats = block.dataset.cat ? block.dataset.cat.split(',') : [];
+  if (currentCats.includes(catId)) {
+    currentCats = currentCats.filter(id => id !== catId);
+  } else {
+    if (currentCats.length < 2) {
+      currentCats.push(catId);
+    } else {
+      currentCats[1] = catId; // Replace the second one if already 2
+    }
+  }
+
+  const bData = {
+    x: parseFloat(block.style.left) || 0,
+    y: parseFloat(block.style.top) || 0,
+    text: (block.querySelector('.block-text')||{}).innerHTML||'',
+    color: BLOCK_COLORS.find(c => c.hex === block.dataset.hex) || BLOCK_COLORS[0],
+    catId: currentCats,
+    w: parseFloat(block.style.width) || 210,
+    h: parseFloat(block.style.height) || block.offsetHeight,
+    id: block.dataset.bid,
+    done: block.dataset.done === '1',
+    media: JSON.parse(block.dataset.media || '[]'),
+    emoji: block.dataset.emoji || '',
+    fontSize: block.dataset.fontSize || '12'
+  };
+
+  // Re-render block to apply styling (lazy way to ensure all header/bg is correct)
+  const p = block.parentNode;
+  const isSelected = selectedBlock === block;
+  block.remove();
+  const newBlock = createBlock(bData.x, bData.y, bData.text, bData.color, bData.catId, bData.w, bData.h, bData.id, bData.done, bData.media, bData.emoji, bData.fontSize);
+  if (isSelected) selectBlock(newBlock);
 }
 
 document.addEventListener('keydown',e=>{
@@ -504,7 +555,14 @@ function updateCatSidePanel(){
   const wrap=document.getElementById('cat-list-wrap');if(!wrap)return;
   const blocks=getBlocks();
   const catHours={};CATEGORIES.forEach(c=>catHours[c.id]=0);
-  blocks.forEach(b=>{if(b.catId)catHours[b.catId]=(catHours[b.catId]||0)+b.durationH;});
+  blocks.forEach(b=>{
+    if(b.catId && b.catId.length) {
+      const splitDur = b.durationH / b.catId.length;
+      b.catId.forEach(id => {
+        catHours[id] = (catHours[id] || 0) + splitDur;
+      });
+    }
+  });
   const maxH=Math.max(...Object.values(catHours),1);
   wrap.innerHTML='';
   const swatchTitle=document.createElement('div');swatchTitle.style.cssText='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:8px 10px 4px;';swatchTitle.textContent='Drag to Schedule';wrap.appendChild(swatchTitle);
@@ -640,7 +698,7 @@ function openBlockDD(block,btnEl){
   dd.appendChild(mkDDBtn('⧉','Duplicate',()=>{
     const t=block.querySelector('.block-text')?.innerHTML||'';
     const c=BLOCK_COLORS.find(x=>x.hex===block.dataset.hex)||BLOCK_COLORS[0];
-    createBlock(parseFloat(block.style.left)+18,findFreeSlot(parseFloat(block.style.top)+ROW_H,block.offsetHeight),t,c,block.dataset.cat||'',block.offsetWidth,block.offsetHeight);
+    createBlock(parseFloat(block.style.left)+18,findFreeSlot(parseFloat(block.style.top)+ROW_H,block.offsetHeight),t,c,block.dataset.cat?block.dataset.cat.split(','):[],block.offsetWidth,block.offsetHeight);
     saveWS();closeDD();
   }));
   const db=mkDDBtn('🗑','Delete Block',()=>{beep('delete');if(selectedBlock===block)selectedBlock=null;block.remove();saveWS();closeDD();});db.classList.add('danger');
