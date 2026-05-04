@@ -176,7 +176,7 @@ function createBlock(x,y,text,color,catId,w,h,id,done,media,emoji,fontSize){
   block.dataset.emoji=emojiVal;
   block.dataset.fontSize=fs;
   block.style.cssText=`left:${x}px;top:${freeY}px;width:${bW}px;height:${bH}px;color:${c.fg}`;
-  if (cats.length === 2) {
+  if (false) {
     block.style.background = `linear-gradient(135deg, ${cats[0].color} 0%, ${cats[1].color} 100%)`;
   } else {
     block.style.background = c.hex;
